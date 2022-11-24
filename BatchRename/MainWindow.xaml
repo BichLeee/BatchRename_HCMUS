@@ -1,0 +1,160 @@
+﻿<Fluent:RibbonWindow  
+        x:Class="BatchRename.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatchRename"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded">
+
+    <DockPanel LastChildFill="True">
+        <Fluent:Ribbon DockPanel.Dock="Top" Padding="0,0,0,-10" BorderThickness="2">
+            <Fluent:RibbonTabItem Header="Home">
+                <Fluent:RibbonGroupBox VerticalAlignment="Center" BorderThickness="2">
+                    <Fluent:Button Header="New" Icon="Images/newscreen.png" Margin="30,20,20,0"/>
+                    <Fluent:Button Header="Open" Icon="Images/open.png" Margin="20,20,20,0"/>
+                    <Fluent:Button Header="Save" Icon="Images/save.png" Margin="20,20,30,0"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button Header="Preview" Icon="Images/preview.png" Margin="20,20,20,0"/>
+                    <Fluent:Button Header="Apply" Icon="Images/play.png" Margin="20,20,20,0"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox >
+                    <Fluent:ComboBox Text="File" Width="200" Margin="20,40,20,0" BorderBrush="Blue" BorderThickness="3"/>
+                    <Fluent:Button Header="Add" Icon="Images/add.png" Margin="20,20,20,0"/>
+                    <Fluent:Button Header="Reset" Icon="Images/reset.png" Margin="20,20,20,0"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox VerticalAlignment="Center" Width="182">
+                    <Fluent:CheckBox Header="Rename on Originals" Margin="20,10,20,0"/>
+                    <Fluent:CheckBox Header="Save to another folder" Margin="20,20,20,0"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <GroupBox VerticalAlignment="Stretch" DockPanel.Dock="Left" Width="250" BorderThickness="1">
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top" Margin="0,10,0,10">
+                    <Label Target="listRules" Content="List Rules :" FontWeight="Bold"/>
+                    <Fluent:ComboBox x:Name="listRules" Width="200" Text="Rules"/>
+                    <WrapPanel HorizontalAlignment="Center" Margin="0,10,0,0">
+                        <Fluent:Button Header="Add Rule" Width="80" Icon="Images/addrule.png"/>
+                        <Fluent:Button Header="Clear" Width="80" Icon="Images/delete.png"/>
+                    </WrapPanel>
+                    <DockPanel LastChildFill="True">
+                        <WrapPanel DockPanel.Dock="Right">
+                            
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up2.png"/>
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down2.png"/>
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up.png"/>
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down.png"/>
+                        </WrapPanel>
+                        <Label Target="rulesListBox" DockPanel.Dock="Left" Content="Rename Rules" FontWeight="Bold"/>
+                    </DockPanel>
+                    <ListBox Height="200" Name="rulesListBox">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel LastChildFill="True">
+                                    <Image DockPanel.Dock="Right" Width="20" Height="20" Margin="0,5,0,5" Source="Images/removerule.png"/>
+                                    <TextBlock VerticalAlignment="Center" Width="200">
+                                        <Run Text="{Binding ruleName}"/>
+                                    </TextBlock>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Background="LightSeaGreen" Margin="0,0,0,5">
+                    <TextBlock Text="Rule description" Foreground="White" FontWeight="Bold" Padding="5,5,5,5">
+                        
+                    </TextBlock>
+                </StackPanel>
+            </DockPanel>
+        </GroupBox>
+        <DockPanel DockPanel.Dock="Right">
+            <GroupBox VerticalAlignment="Stretch">
+                <DockPanel LastChildFill="True">
+                    <WrapPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
+                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up2.png"/>
+                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down2.png"/>
+                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up.png"/>
+                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down.png"/>
+                    </WrapPanel>
+                  
+                    <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch">
+                        <ListBox.Resources>
+                            <ContextMenu x:Key="listBoxContextMenu">
+                                <MenuItem Header="Remove">
+                                    <MenuItem.Icon>
+                                        <Image Source="Images/delete.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListBox.Resources>
+                        <ListBox.Template>
+                            <ControlTemplate>
+                                <DockPanel>
+                                    <Grid DockPanel.Dock="Top" Height="30" HorizontalAlignment="Stretch" Background="LightSeaGreen">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="180"></ColumnDefinition>
+                                            <ColumnDefinition Width="180"></ColumnDefinition>
+                                            <ColumnDefinition Width="250"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Path Grid.ColumnSpan="4" Data="M0,72 L168,72" Height="1" Stretch="Fill" Stroke="Black" VerticalAlignment="Bottom"/>
+                                        <Label Grid.Column="0" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Filename</Label>
+                                        <Label Grid.Column="1" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">New Filename</Label>
+                                        <Label Grid.Column="2" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Path</Label>
+                                        <Label Grid.Column="3" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Error</Label>
+                                        <Border Grid.Column="0" BorderBrush="WhiteSmoke" BorderThickness="1"/>
+                                        <Border Grid.Column="1" BorderBrush="WhiteSmoke" BorderThickness="1"/>
+                                        <Border Grid.Column="2" BorderBrush="WhiteSmoke" BorderThickness="1"/>
+                                        <Border Grid.Column="3" BorderBrush="WhiteSmoke" BorderThickness="1"/>
+                                    </Grid>
+                                    <ItemsPresenter></ItemsPresenter>
+                                </DockPanel>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="ContextMenu" Value="{StaticResource listBoxContextMenu}"/>
+                                <Setter Property="Margin" Value="5,0,5,0"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                               
+                            <ItemsPanelTemplate>
+                                <StackPanel>
+                                    
+                                </StackPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="30" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"></ColumnDefinition>
+                                        <ColumnDefinition Width="180"></ColumnDefinition>
+                                        <ColumnDefinition Width="250"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Path Grid.ColumnSpan="4" Data="M0,72 L168,72" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="WhiteSmoke" VerticalAlignment="Bottom"/>
+                                    <TextBlock Text="{Binding fileName}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"></TextBlock>
+                                    <TextBlock Text="{Binding newFileName}" Grid.Column="1" VerticalAlignment="Bottom"></TextBlock>
+                                    <TextBlock Text="{Binding path}" Grid.Column="2" VerticalAlignment="Bottom"></TextBlock>
+                                    <TextBlock Text="{Binding error}" Grid.Column="3" VerticalAlignment="Bottom"></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </GroupBox>
+        </DockPanel>
+    </DockPanel>
+</Fluent:RibbonWindow>

@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\add.png" />
+    <None Remove="Images\addrule.png" />
+    <None Remove="Images\delete.png" />
+    <None Remove="Images\down.png" />
+    <None Remove="Images\down2.png" />
+    <None Remove="Images\newpage.png" />
+    <None Remove="Images\newscreen.png" />
+    <None Remove="Images\open.png" />
+    <None Remove="Images\play.png" />
+    <None Remove="Images\preview.png" />
+    <None Remove="Images\removerule.png" />
+    <None Remove="Images\reset.png" />
+    <None Remove="Images\save.png" />
+    <None Remove="Images\up.png" />
+    <None Remove="Images\up2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fluent.Ribbon" Version="9.0.4" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Fluent">
+      <HintPath>bin\Debug\net6.0-windows\Fluent.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\add.png" />
+    <Resource Include="Images\addrule.png" />
+    <Resource Include="Images\delete.png" />
+    <Resource Include="Images\down.png" />
+    <Resource Include="Images\down2.png" />
+    <Resource Include="Images\newpage.png" />
+    <Resource Include="Images\newscreen.png" />
+    <Resource Include="Images\open.png" />
+    <Resource Include="Images\play.png" />
+    <Resource Include="Images\preview.png" />
+    <Resource Include="Images\removerule.png" />
+    <Resource Include="Images\reset.png" />
+    <Resource Include="Images\save.png" />
+    <Resource Include="Images\up.png" />
+    <Resource Include="Images\up2.png" />
+  </ItemGroup>
+
+</Project>
