@@ -21,13 +21,19 @@
                     <Fluent:Button Header="Preview" Icon="Images/preview.png" Margin="20,20,20,0"/>
                     <Fluent:Button Header="Apply" Icon="Images/play.png" Margin="20,20,20,0"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox >
-                    <Fluent:ComboBox Text="File" Width="200" Margin="20,40,20,0" BorderBrush="Blue" BorderThickness="3"/>
-                    <Fluent:Button Header="Add" Icon="Images/add.png" Margin="20,20,20,0"/>
+                <Fluent:RibbonGroupBox >    
+                    <Fluent:ComboBox Name="ComboType"  Text="Select type"  Width="200" Margin="20,40,20,0" BorderBrush="Blue" BorderThickness="3" SelectionChanged="ComboBox_SelectionChanged">
+                        <Fluent:ComboBox.ItemTemplate >
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"/>
+                            </DataTemplate>
+                        </Fluent:ComboBox.ItemTemplate>
+                    </Fluent:ComboBox>
+                    <Fluent:Button Header="Add" Icon="Images/add.png" Margin="20,20,20,0" Click="Handle_Add"/>
                     <Fluent:Button Header="Reset" Icon="Images/reset.png" Margin="20,20,20,0"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox VerticalAlignment="Center" Width="182">
-                    <Fluent:CheckBox Header="Rename on Originals" Margin="20,10,20,0"/>
+                    <Fluent:CheckBox Header="Rename on Originals" Margin="20,10,20,0" />
                     <Fluent:CheckBox Header="Save to another folder" Margin="20,20,20,0"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
@@ -36,14 +42,14 @@
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Top" Margin="0,10,0,10">
                     <Label Target="listRules" Content="List Rules :" FontWeight="Bold"/>
-                    <Fluent:ComboBox x:Name="listRules" Width="200" Text="Rules"/>
+                    <Fluent:ComboBox x:Name="listRules" Width="200" Text="Rules" SelectionChanged="listRules_SelectionChanged" />
                     <WrapPanel HorizontalAlignment="Center" Margin="0,10,0,0">
                         <Fluent:Button Header="Add Rule" Width="80" Icon="Images/addrule.png"/>
                         <Fluent:Button Header="Clear" Width="80" Icon="Images/delete.png"/>
                     </WrapPanel>
                     <DockPanel LastChildFill="True">
                         <WrapPanel DockPanel.Dock="Right">
-                            
+
                             <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up2.png"/>
                             <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down2.png"/>
                             <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up.png"/>
@@ -51,7 +57,7 @@
                         </WrapPanel>
                         <Label Target="rulesListBox" DockPanel.Dock="Left" Content="Rename Rules" FontWeight="Bold"/>
                     </DockPanel>
-                    <ListBox Height="200" Name="rulesListBox">
+                    <ListBox Height="200" x:Name="rulesListBox">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel/>
@@ -61,9 +67,7 @@
                             <DataTemplate>
                                 <DockPanel LastChildFill="True">
                                     <Image DockPanel.Dock="Right" Width="20" Height="20" Margin="0,5,0,5" Source="Images/removerule.png"/>
-                                    <TextBlock VerticalAlignment="Center" Width="200">
-                                        <Run Text="{Binding ruleName}"/>
-                                    </TextBlock>
+                                    <TextBlock VerticalAlignment="Center" Width="200"><Run Text="{Binding ruleName}"/></TextBlock>
                                 </DockPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -71,7 +75,7 @@
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Background="LightSeaGreen" Margin="0,0,0,5">
                     <TextBlock Text="Rule description" Foreground="White" FontWeight="Bold" Padding="5,5,5,5">
-                        
+
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
@@ -85,8 +89,8 @@
                         <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up.png"/>
                         <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down.png"/>
                     </WrapPanel>
-                  
-                    <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch">
+
+                    <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch"  >
                         <ListBox.Resources>
                             <ContextMenu x:Key="listBoxContextMenu">
                                 <MenuItem Header="Remove">
@@ -107,8 +111,8 @@
                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Path Grid.ColumnSpan="4" Data="M0,72 L168,72" Height="1" Stretch="Fill" Stroke="Black" VerticalAlignment="Bottom"/>
-                                        <Label Grid.Column="0" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Filename</Label>
-                                        <Label Grid.Column="1" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">New Filename</Label>
+                                        <Label Grid.Column="0" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Name</Label>
+                                        <Label Grid.Column="1" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">New Name</Label>
                                         <Label Grid.Column="2" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Path</Label>
                                         <Label Grid.Column="3" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Error</Label>
                                         <Border Grid.Column="0" BorderBrush="WhiteSmoke" BorderThickness="1"/>
@@ -120,7 +124,7 @@
                                 </DockPanel>
                             </ControlTemplate>
                         </ListBox.Template>
-                        
+
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="ContextMenu" Value="{StaticResource listBoxContextMenu}"/>
@@ -128,10 +132,10 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemsPanel>
-                               
+
                             <ItemsPanelTemplate>
                                 <StackPanel>
-                                    
+
                                 </StackPanel>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
@@ -145,14 +149,19 @@
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Path Grid.ColumnSpan="4" Data="M0,72 L168,72" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="WhiteSmoke" VerticalAlignment="Bottom"/>
-                                    <TextBlock Text="{Binding fileName}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"></TextBlock>
-                                    <TextBlock Text="{Binding newFileName}" Grid.Column="1" VerticalAlignment="Bottom"></TextBlock>
+                                    <TextBlock Text="{Binding itemName}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"></TextBlock>
+                                    <TextBlock Text="{Binding newItemName}" Grid.Column="1" VerticalAlignment="Bottom"></TextBlock>
                                     <TextBlock Text="{Binding path}" Grid.Column="2" VerticalAlignment="Bottom"></TextBlock>
                                     <TextBlock Text="{Binding error}" Grid.Column="3" VerticalAlignment="Bottom"></TextBlock>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                    
+                    
+                    
+                    
+                    
                 </DockPanel>
             </GroupBox>
         </DockPanel>
