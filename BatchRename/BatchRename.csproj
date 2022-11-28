@@ -27,6 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="dllRules\AddPrefixRule.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Fluent.Ribbon" Version="9.0.4" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
   </ItemGroup>
@@ -42,9 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="dllRules\AddPrefixRule.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Images\add.png" />
     <Resource Include="Images\addrule.png" />
     <Resource Include="Images\delete.png" />

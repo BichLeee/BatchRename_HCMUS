@@ -73,7 +73,6 @@ namespace BatchRename
             
         }
 
-
         public void handleAdd(object sender, RoutedEventArgs e)
         {
             textPrefix = editTxtBox.Text.ToString();

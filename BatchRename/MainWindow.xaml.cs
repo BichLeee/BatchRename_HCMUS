@@ -311,7 +311,7 @@ namespace BatchRename
 
 
             var add = rules[0];
-            add.showUI();   
+            add.showUI();
             add.Rename(_listFile);
 
             filesListBox.ItemsSource = null;
