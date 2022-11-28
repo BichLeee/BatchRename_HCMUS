@@ -21,7 +21,8 @@ using System.IO;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Path = System.IO.Path;
 using static System.Net.WebRequestMethods;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Interface;
+using System.Reflection;
 
 namespace BatchRename
 {
@@ -35,36 +36,17 @@ namespace BatchRename
             InitializeComponent();
         }
 
-      
-        class Item
-        {
-            public string itemName { get; set; }
-            public string newItemName { get; set; }
-            public string path { get; set; }
-            public string error { get; set; }
-
-            public Item() { }
-
-        }
-
-        class Rule
-        {
-            public string ruleName { get; set; }
-            public string ruleDescription { get; set; }
-        }
-
         ObservableCollection<Item> _listFile= new ObservableCollection<Item>();
         ObservableCollection<Item> _listFolder = new ObservableCollection<Item>();
 
-        ObservableCollection<Rule> _listRule = new ObservableCollection<Rule>();
+        ObservableCollection<IRule> _listRule = new ObservableCollection<IRule>();
 
         BindingList<string> itemType;
 
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _listRule = new ObservableCollection<Rule> {
-                new Rule() { ruleName = "Rule 1", ruleDescription="Rule 1"},
-                new Rule() { ruleName = "Rule 2", ruleDescription="Rule 2"}
+            _listRule = new ObservableCollection<IRule> {
+
             };
 
             
@@ -169,12 +151,171 @@ namespace BatchRename
                                 error = ""
                             });
                         }
-                        MessageBox.Show("Files found: " + pathFolder, "Message");
                     }
-
-                   
+                                      
                 }
             }
+        }
+
+        private void Handle_Reset(object sender, RoutedEventArgs e)
+        {
+            _listFile.Clear();
+            _listFolder.Clear();
+        }
+
+        private void MoveToTop(object sender, RoutedEventArgs e) { 
+
+            if(ComboType.SelectedItem == null)
+            {
+                return;
+            }
+        
+            if (ComboType.SelectedItem.ToString() == "File")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToTop(_listFile, index);
+            }else if(ComboType.SelectedItem.ToString() == "Folder")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToTop(_listFolder, index);
+            }
+            else
+            {
+
+            }
+        }
+
+        private void MoveToBottom(object sender, RoutedEventArgs e)
+        {
+            if (ComboType.SelectedItem == null)
+            {
+                return;
+            }
+            if (ComboType.SelectedItem.ToString() == "File")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToBottom(_listFile, index);
+            }
+            else if (ComboType.SelectedItem.ToString() == "Folder")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToBottom(_listFolder, index);
+            }
+        }
+
+        private void MoveToPrev(object sender, RoutedEventArgs e)
+        {
+            if (ComboType.SelectedItem == null)
+            {
+                return;
+            }
+            if (ComboType.SelectedItem.ToString() == "File")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToPrev(_listFile, index);
+            }
+            else if (ComboType.SelectedItem.ToString() == "Folder")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToPrev(_listFolder, index);
+            }
+        }
+
+        private void MoveToNext(object sender, RoutedEventArgs e)
+        {
+            if (ComboType.SelectedItem == null)
+            {
+                return;
+            }
+            if (ComboType.SelectedItem.ToString() == "File")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToNext(_listFile, index);
+            }
+            else if (ComboType.SelectedItem.ToString() == "Folder")
+            {
+                int index = filesListBox.SelectedIndex;
+                HandleMoveToNext(_listFolder, index);
+            }
+        }
+
+        private void HandleMoveToTop(ObservableCollection<Item> list , int index)
+        {
+            if(index != -1)
+            {
+                Item temp = list[index];
+                for(int i=index; i>0; i--)
+                {
+                    list[i] = list[i - 1];
+                }
+                list[0] = temp;
+            }
+        }
+        private void HandleMoveToBottom(ObservableCollection<Item> list, int index)
+        {
+            if (index != -1)
+            {
+                Item temp = list[index];
+                for (int i = index; i < list.Count -1; i++)
+                {
+                    list[i] = list[i + 1];
+                }
+                list[list.Count -1] = temp;
+            }
+        }
+        private void HandleMoveToPrev(ObservableCollection<Item> list, int index)
+        {
+            if (index != -1 && index != 0)
+            {
+                Item temp = list[index];
+                list[index] = list[index - 1];
+                list[index - 1] = temp;
+            }
+        }
+        private void HandleMoveToNext(ObservableCollection<Item> list, int index)
+        {
+            if (index != -1 && index != list.Count -1)
+            {
+                Item temp = list[index];
+                list[index] = list[index + 1];
+                list[index + 1] = temp;
+            }
+        }
+
+        private void Click_Apply(object sender, RoutedEventArgs e)
+        {
+
+            List<IRule> rules = new List<IRule>();
+            var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
+            var dlls = new DirectoryInfo(exeFolder).GetFiles("dllRules/*.dll");
+
+
+            foreach (var dll in dlls)
+            {
+                var assembly = Assembly.LoadFile(dll.FullName);
+
+                var types = assembly.GetTypes();
+
+                foreach (var type in types)
+                {
+                    if (type.IsClass)
+                    {
+                        if (typeof(IRule).IsAssignableFrom(type))
+                        {
+                            var temp_rule = Activator.CreateInstance(type) as IRule;
+                            rules.Add(temp_rule);
+                        }
+                    }
+                }
+            }
+
+
+            var add = rules[0];
+            add.showUI();   
+            add.Rename(_listFile);
+
+            filesListBox.ItemsSource = null;
+            filesListBox.ItemsSource = _listFile;
         }
     }
 }

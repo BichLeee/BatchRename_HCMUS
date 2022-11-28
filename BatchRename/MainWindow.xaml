@@ -19,7 +19,7 @@
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Button Header="Preview" Icon="Images/preview.png" Margin="20,20,20,0"/>
-                    <Fluent:Button Header="Apply" Icon="Images/play.png" Margin="20,20,20,0"/>
+                    <Fluent:Button Header="Apply" Icon="Images/play.png" Margin="20,20,20,0" Click="Click_Apply"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox >    
                     <Fluent:ComboBox Name="ComboType"  Text="Select type"  Width="200" Margin="20,40,20,0" BorderBrush="Blue" BorderThickness="3" SelectionChanged="ComboBox_SelectionChanged">
@@ -30,7 +30,7 @@
                         </Fluent:ComboBox.ItemTemplate>
                     </Fluent:ComboBox>
                     <Fluent:Button Header="Add" Icon="Images/add.png" Margin="20,20,20,0" Click="Handle_Add"/>
-                    <Fluent:Button Header="Reset" Icon="Images/reset.png" Margin="20,20,20,0"/>
+                    <Fluent:Button Header="Reset" Icon="Images/reset.png" Margin="20,20,20,0" Click="Handle_Reset"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox VerticalAlignment="Center" Width="182">
                     <Fluent:CheckBox Header="Rename on Originals" Margin="20,10,20,0" />
@@ -84,12 +84,27 @@
             <GroupBox VerticalAlignment="Stretch">
                 <DockPanel LastChildFill="True">
                     <WrapPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
-                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up2.png"/>
-                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down2.png"/>
-                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up.png"/>
-                        <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down.png"/>
+                        <Button Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand"  Click ="MoveToTop">
+                            <Button.Content>
+                                <Image Source="Images/up2.png"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Click ="MoveToBottom">
+                            <Button.Content>
+                                <Image Source="Images/down2.png" />
+                            </Button.Content>
+                        </Button>
+                        <Button Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand"   Click="MoveToPrev">
+                            <Button.Content>
+                                <Image Source="Images/up.png"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand"  Click="MoveToNext">
+                            <Button.Content>
+                                <Image Source="Images/down.png"/>
+                            </Button.Content>
+                        </Button>
                     </WrapPanel>
-
                     <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch"  >
                         <ListBox.Resources>
                             <ContextMenu x:Key="listBoxContextMenu">

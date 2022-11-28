@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="dllRules\AddPrefixRule.dll" />
     <None Remove="Images\add.png" />
     <None Remove="Images\addrule.png" />
     <None Remove="Images\delete.png" />
@@ -31,12 +32,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Interface\Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Fluent">
       <HintPath>bin\Debug\net6.0-windows\Fluent.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="dllRules\AddPrefixRule.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\add.png" />
     <Resource Include="Images\addrule.png" />
     <Resource Include="Images\delete.png" />
