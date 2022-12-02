@@ -1,17 +1,13 @@
-using System;
-using System.Windows.Controls;
-using System.Windows;
 using Interface;
-using System.Runtime.CompilerServices;
-using System.Windows.Documents;
-using System.Windows.Media.Imaging;
-using System.Collections.Generic;
-using System.Text;
+using System;
 using System.Collections.ObjectModel;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace BatchRename
 {
-    public class AddPrefixRule : Window, IRule
+    public class AddSuffixRule : Window,IRule
     {
 
         private Canvas canvas = new Canvas();
@@ -20,24 +16,24 @@ namespace BatchRename
         private Button cancelBtn = new Button();
         private TextBox editTxtBox = new TextBox();
 
-        string textPrefix = "";
-        public string ruleName => "Add Prefix Rule";
-        public string ruleDescription => "Add " + textPrefix + " to prefix file name";
+        string textSuffix = "";
+        public string ruleName => "Add Suffix Rule";
+        public string ruleDescription => "Add " + textSuffix + " to suffix file name";
         public bool isEditable()
         {
-          return true;
+            return true;
         }
 
-        
-        public AddPrefixRule()
+
+        public AddSuffixRule()
         {
-            this.Title = "Add Prefix Rule";
+            this.Title = "Add Suffix Rule";
             this.Width = 420;
             this.Height = 240;
             this.ResizeMode = ResizeMode.NoResize;
 
 
-            label.Content = "Input characters you want to add as prefix";
+            label.Content = "Input characters you want to add as suffix";
             label.Margin = new Thickness(20, 15, 0, 0);
             label.FontSize = 15;
 
@@ -45,8 +41,7 @@ namespace BatchRename
             editTxtBox.Height = 80;
             editTxtBox.TextWrapping = TextWrapping.WrapWithOverflow;
             editTxtBox.Margin = new Thickness(20, 55, 0, 5);
-            editTxtBox.Text = textPrefix;
-
+            editTxtBox.Text = textSuffix;
 
 
             addBtn.Content = "Add";
@@ -73,12 +68,12 @@ namespace BatchRename
             canvas.Children.Add(cancelBtn);
 
             this.AddChild(canvas);
-            
+
         }
 
         public void handleAdd(object sender, RoutedEventArgs e)
         {
-            textPrefix = editTxtBox.Text.ToString();
+            textSuffix = editTxtBox.Text.ToString();
             DialogResult = true;
         }
         public void handleCancel(object sender, RoutedEventArgs e)
@@ -88,28 +83,48 @@ namespace BatchRename
 
         public bool? showUI()
         {
-             return this.ShowDialog();           
+            return this.ShowDialog();
         }
+
+
         public void Rename(ObservableCollection<Item> list, bool isFile)
         {
-
-            for (int i =0; i < list.Count; i++)
+            string result;
+            for (int i = 0; i < list.Count; i++)
             {
-                var builder = new StringBuilder();
-                builder.Append(textPrefix);
-                builder.Append(list[i].itemName);
+                string str = list[i].itemName;
+                if (isFile)
+                {
+                    string[] strings = str.Split('.');
+                    string fileName = "", extension = strings[^1];
+                    foreach (string s in strings)
+                    {
+    
+                        if (s == extension)
+                        {
+                            fileName = fileName.Remove(fileName.Length - 1);
+                            break;
+                        }
+                        fileName = s + '.';
+                    }
+                    result = fileName + textSuffix + '.' + extension;
+                }
+                else
+                {
+                    result = str+ textSuffix;
+                }
 
-                string result = builder.ToString();
                 list[i].newItemName = result;
             }
 
         }
         public IRule Clone()
         {
-            AddPrefixRule clone = new AddPrefixRule();
-            clone.textPrefix = textPrefix;
+            AddSuffixRule clone = new AddSuffixRule();
+            clone.textSuffix = textSuffix;
             return clone;
         }
+        
 
     }
 }

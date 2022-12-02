@@ -5,10 +5,12 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="dllRules\AddPrefixRule.dll" />
+    <None Remove="dllRules\AddSuffixRule.dll" />
     <None Remove="Images\add.png" />
     <None Remove="Images\addrule.png" />
     <None Remove="Images\delete.png" />
@@ -30,11 +32,15 @@
     <Content Include="dllRules\AddPrefixRule.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="dllRules\AddSuffixRule.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Fluent.Ribbon" Version="9.0.4" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

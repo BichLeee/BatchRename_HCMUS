@@ -12,8 +12,15 @@ namespace Interface
         public string newItemName { get; set; }
         public string path { get; set; }
         public string error { get; set; }
-
-        
+        public Item Clone()
+        {
+            Item clone = new Item();
+            clone.itemName = itemName;
+            clone.newItemName = newItemName;   
+            clone.path = path;
+            clone.error = error;
+            return clone;
+        }
 
     }
 }

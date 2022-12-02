@@ -18,7 +18,7 @@
                     <Fluent:Button Header="Save" Icon="Images/save.png" Margin="20,20,30,0"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:Button Header="Preview" Icon="Images/preview.png" Margin="20,20,20,0"/>
+                    <Fluent:Button Header="Preview" Icon="Images/preview.png" Margin="20,20,20,0" Click="Handle_Preview"/>
                     <Fluent:Button Header="Apply" Icon="Images/play.png" Margin="20,20,20,0" Click="Click_Apply"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox >    
@@ -33,31 +33,37 @@
                     <Fluent:Button Header="Reset" Icon="Images/reset.png" Margin="20,20,20,0" Click="Handle_Reset"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox VerticalAlignment="Center" Width="182">
-                    <Fluent:CheckBox Header="Rename on Originals" Margin="20,10,20,0" />
-                    <Fluent:CheckBox Header="Save to another folder" Margin="20,20,20,0"/>
+                    <Fluent:CheckBox Name ="checkBoxOriginals"  Header="Rename on Originals" Margin="20,10,20,0" IsChecked="True" Click="saveFileToOriginals"/>
+                    <Fluent:CheckBox Name="checkBoxAnother" Header="Save to another folder" Margin="20,20,20,0" Click="saveFileToAnother"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
         <GroupBox VerticalAlignment="Stretch" DockPanel.Dock="Left" Width="250" BorderThickness="1">
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Top" Margin="0,10,0,10">
-                    <Label Target="listRules" Content="List Rules :" FontWeight="Bold"/>
-                    <Fluent:ComboBox x:Name="listRules" Width="200" Text="Rules" SelectionChanged="listRules_SelectionChanged" />
+                    <Label  Content="List Rules :" FontWeight="Bold"/>
+                    <Fluent:ComboBox Name="listRules" Width="200" Text="Rules"  SelectionChanged="listRules_SelectionChanged"  >
+                        <Fluent:ComboBox.ItemTemplate >
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ruleName, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </Fluent:ComboBox.ItemTemplate>
+                    </Fluent:ComboBox>
                     <WrapPanel HorizontalAlignment="Center" Margin="0,10,0,0">
-                        <Fluent:Button Header="Add Rule" Width="80" Icon="Images/addrule.png"/>
-                        <Fluent:Button Header="Clear" Width="80" Icon="Images/delete.png"/>
+                        <Fluent:Button Header="Add Rule" Width="80" Icon="Images/addrule.png" Click="AddRule_Click"/>
+                        <Fluent:Button Header="Clear" Width="80" Icon="Images/delete.png" Click="clearRule"/>
                     </WrapPanel>
                     <DockPanel LastChildFill="True">
                         <WrapPanel DockPanel.Dock="Right">
 
-                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up2.png"/>
-                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down2.png"/>
-                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up.png"/>
-                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down.png"/>
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up2.png" MouseLeftButtonDown="moveRuleToTop"/>
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down2.png" MouseLeftButtonDown="moveRuleToBottom"/>
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/up.png" MouseLeftButtonDown="moveRuleToPrev"/>
+                            <Image Width="20" Height="20" Margin="0,5,5,5" Cursor="Hand" Source="Images/down.png" MouseLeftButtonDown="moveRuleToNext"/>
                         </WrapPanel>
-                        <Label Target="rulesListBox" DockPanel.Dock="Left" Content="Rename Rules" FontWeight="Bold"/>
+                        <Label  DockPanel.Dock="Left" Content="Rename Rules" FontWeight="Bold"/>
                     </DockPanel>
-                    <ListBox Height="200" x:Name="rulesListBox">
+                    <ListBox Height="200" x:Name="rulesListBox" SelectionChanged="rulesListBox_SelectionChanged" >
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel/>
@@ -66,17 +72,27 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel LastChildFill="True">
-                                    <Image DockPanel.Dock="Right" Width="20" Height="20" Margin="0,5,0,5" Source="Images/removerule.png"/>
-                                    <TextBlock VerticalAlignment="Center" Width="200"><Run Text="{Binding ruleName}"/></TextBlock>
+                                    <Button DockPanel.Dock="Right"  Width="20" Height="20" Margin="0,5,0,5" Cursor="Hand" Click="removeRule">
+                                        <Button.Content>
+                                            <Image Source="Images/removerule.png"/>
+                                        </Button.Content>
+                                    </Button>
+                                    <TextBlock VerticalAlignment="Center" Width="200"><Run Text="{Binding ruleName, Mode=OneWay}"/></TextBlock>
                                 </DockPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Background="LightSeaGreen" Margin="0,0,0,5">
-                    <TextBlock Text="Rule description" Foreground="White" FontWeight="Bold" Padding="5,5,5,5">
-
+                    <TextBlock  Text="Rule description" Foreground="White" FontWeight="Bold" Padding="5,5,5,5">
+                       
                     </TextBlock>
+                    <TextBlock  Name="txt_description"  Text="" TextWrapping="Wrap" Foreground="Black"  Padding="5,5,5,5" Height="102">
+
+                        
+                    </TextBlock>
+                    <Button Name="buttonEdit" Width="40" Height="30" Margin="180,5,0,0" Content="Edit" Click="buttonEditClick" Visibility="Hidden"/>
+
                 </StackPanel>
             </DockPanel>
         </GroupBox>
@@ -108,7 +124,7 @@
                     <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch"  >
                         <ListBox.Resources>
                             <ContextMenu x:Key="listBoxContextMenu">
-                                <MenuItem Header="Remove">
+                                <MenuItem Header="Remove" Click="removeItem"> 
                                     <MenuItem.Icon>
                                         <Image Source="Images/delete.png"/>
                                     </MenuItem.Icon>
