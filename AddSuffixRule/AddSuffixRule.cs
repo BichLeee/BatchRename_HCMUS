@@ -1,5 +1,6 @@
 using Interface;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
@@ -16,17 +17,34 @@ namespace BatchRename
         private Button cancelBtn = new Button();
         private TextBox editTxtBox = new TextBox();
 
-        string textSuffix = "";
-        public string ruleName => "Add Suffix Rule";
-        public string ruleDescription => "Add " + textSuffix + " to suffix file name";
+        public string ruleName { get; set; }
+        public string ruleDescription { get; set; }
+        public List<string> Parameter { get; set; }
+        public string Replace { get; set; }
+        public List<int> counter { get; set; }
         public bool isEditable()
         {
             return true;
         }
 
-
+        public AddSuffixRule(string _rulename, string _ruleDescription, List<string> _parameter,
+           string _replace, List<int> _counter)
+        {
+            ruleName = _rulename;
+            ruleDescription = _ruleDescription;
+            Parameter = _parameter;
+            Replace = _replace;
+            counter = _counter;
+        }
         public AddSuffixRule()
         {
+            Parameter = new List<string>();
+            Parameter.Add("");
+            ruleName = "Add Suffix Rule";
+            ruleDescription = "Add " + Parameter[0] + " into suffix filename.";
+            counter = new List<int>();
+            counter.Add(0);
+
             this.Title = "Add Suffix Rule";
             this.Width = 420;
             this.Height = 240;
@@ -41,7 +59,7 @@ namespace BatchRename
             editTxtBox.Height = 80;
             editTxtBox.TextWrapping = TextWrapping.WrapWithOverflow;
             editTxtBox.Margin = new Thickness(20, 55, 0, 5);
-            editTxtBox.Text = textSuffix;
+            editTxtBox.Text = Parameter[0];
 
 
             addBtn.Content = "Add";
@@ -73,7 +91,8 @@ namespace BatchRename
 
         public void handleAdd(object sender, RoutedEventArgs e)
         {
-            textSuffix = editTxtBox.Text.ToString();
+            Parameter[0] = editTxtBox.Text.ToString();
+            ruleDescription = "Add " + Parameter[0] + " into suffix filename.";
             DialogResult = true;
         }
         public void handleCancel(object sender, RoutedEventArgs e)
@@ -107,11 +126,11 @@ namespace BatchRename
                         }
                         fileName = s + '.';
                     }
-                    result = fileName + textSuffix + '.' + extension;
+                    result = fileName + Parameter[0] + '.' + extension;
                 }
                 else
                 {
-                    result = str+ textSuffix;
+                    result = str+ Parameter[0];
                 }
 
                 list[i].newItemName = result;
@@ -121,7 +140,7 @@ namespace BatchRename
         public IRule Clone()
         {
             AddSuffixRule clone = new AddSuffixRule();
-            clone.textSuffix = textSuffix;
+            clone.Parameter = Parameter;
             return clone;
         }
         

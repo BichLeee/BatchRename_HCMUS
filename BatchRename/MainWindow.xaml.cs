@@ -13,18 +13,17 @@ using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Path = System.IO.Path;
 using static System.Net.WebRequestMethods;
+
 using Interface;
 using System.Reflection;
 using System.Data;
 using File = System.IO.File;
+using System.Text.Json;
+using System.Windows.Shapes;
 
 namespace BatchRename
 {
@@ -33,7 +32,6 @@ namespace BatchRename
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
-
 
         public MainWindow()
         {
@@ -49,9 +47,6 @@ namespace BatchRename
             {
                 "File","Folder"
             };
-
-
-
 
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -96,7 +91,21 @@ namespace BatchRename
         {
 
         }
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            DialogResult dialogResult = MessageBox.Show("Sure", "Do you want to exit the program?", MessageBoxButtons.YesNo);
+            if (dialogResult == System.Windows.Forms.DialogResult.Yes)
+            {
+               Environment.Exit(0);
+            }
+            else if (dialogResult == System.Windows.Forms.DialogResult.No)
+            {
+                //do something else
+            }
 
+
+        }
         private void Handle_Add(object sender, RoutedEventArgs e)
         {
             if (ComboType.SelectedItem == null)
@@ -106,12 +115,10 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Multiselect = true;
                 openFileDialog.Filter = "All files (*.*)|*.*";
                 openFileDialog.ShowDialog();
-
 
                 string[] files = openFileDialog.FileNames;
 
@@ -139,8 +146,6 @@ namespace BatchRename
                             error = ""
                         });
                     }
-
-
                 }
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
@@ -311,9 +316,6 @@ namespace BatchRename
                 list[index + 1] = temp;
             }
         }
-
-
-
         private void AddRule_Click(object sender, RoutedEventArgs e)
         {
             if (listRules.SelectedItem == null)
@@ -577,15 +579,115 @@ namespace BatchRename
             }
             else
                 checkBoxOriginals.IsChecked = true;
-
-
-            
         }
-
         private void clearRule(object sender, RoutedEventArgs e)
         {
             _chosenRule.Clear();
             txt_description.Text = "";
+        }
+
+        public string path = "";
+        private void savePreset(object sender, RoutedEventArgs e)
+        {
+            if(_chosenRule.Count == 0)
+            {
+                MessageBox.Show("Chosen Rules is empty.", "Errors");
+                return;
+            }
+
+            if (this.path == "")
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "JSON (*.json)|*.json";
+
+                dialog.ShowDialog();
+                this.path = dialog.FileName;
+            }
+            try
+            {
+                StreamWriter output;
+                List<RuleFormat> rules = new List<RuleFormat>();
+                foreach (var rule in _chosenRule)
+                {
+                    rules.Add(new RuleFormat
+                    {
+                        ruleName = rule.ruleName,
+                        ruleDescription = rule.ruleDescription,
+                        Parameter = rule.Parameter,
+                        Replace = rule.Replace
+                    });
+                }
+
+
+                output = new StreamWriter(this.path);
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string data = JsonSerializer.Serialize(rules, options);
+                output.Write(data);
+                output.Close();
+                MessageBox.Show($"Preset saved successfully!\nPath: {this.path}", "Success");
+            }
+            catch (JsonException exception)
+            {
+                MessageBox.Show("Can't save preset.", "Errors");
+            }
+
+        }
+
+        private void loadRulePreset(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "JSON (*.json)|*.json";
+
+            try
+            {
+                dialog.ShowDialog();
+            } catch(Exception ex)
+            {
+                return;
+            }
+                
+
+            string preset = dialog.FileName;
+            string content = File.ReadAllText(preset);
+
+            List<RuleFormat> rules = new List<RuleFormat>();
+
+            try
+            {
+                rules = JsonSerializer.Deserialize<List<RuleFormat>>(content);
+            }
+            catch (JsonException exception)
+            {
+                MessageBox.Show("Cannot parse data from the file, check the file again", "Error");
+                return;
+            }
+
+            this._chosenRule.Clear();
+
+            foreach (RuleFormat rule in rules)
+            {
+                {
+                    foreach(IRule item in _listRule)
+                    {
+                        if(item.ruleName== rule.ruleName)
+                        {
+                            IRule target = item.Clone();
+                            target.ruleDescription = rule.ruleDescription;
+                            target.Parameter = rule.Parameter;
+                            target.counter = rule.counter;
+                            target.Replace = rule.Replace;
+
+                            this._chosenRule.Add(target);
+                        }
+                    }
+                }
+            }
+
+            listRules.ItemsSource = null;
+            listRules.ItemsSource = rules;
+
+            MessageBox.Show("Loaded preset successfully!", "Success");
+            this.path = preset;
         }
     }
 }

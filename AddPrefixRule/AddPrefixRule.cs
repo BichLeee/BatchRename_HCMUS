@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 
 namespace BatchRename
 {
@@ -20,17 +21,35 @@ namespace BatchRename
         private Button cancelBtn = new Button();
         private TextBox editTxtBox = new TextBox();
 
-        string textPrefix = "";
-        public string ruleName => "Add Prefix Rule";
-        public string ruleDescription => "Add " + textPrefix + " to prefix file name";
+        public string ruleName { get; set; }
+        public string ruleDescription { get; set; }
+        public List<string> Parameter { get; set; }
+        public string Replace { get; set; }
+        public List<int> counter { get; set; }
+
         public bool isEditable()
         {
           return true;
         }
-
-        
+        public AddPrefixRule(string _rulename,string _ruleDescription, List<string> _parameter,
+            string _replace, List<int> _counter)
+        {
+            ruleName = _rulename;
+            ruleDescription = _ruleDescription;
+            Parameter = _parameter;
+            Replace = _replace;
+            counter = _counter;
+        }
         public AddPrefixRule()
         {
+            Parameter = new List<string>();
+            Parameter.Add("");
+            ruleName = "Add Prefix Rule";
+            ruleDescription = "Add " + Parameter[0] + " into prefix filename.";
+            counter = new List<int>();
+            counter.Add(0);
+
+
             this.Title = "Add Prefix Rule";
             this.Width = 420;
             this.Height = 240;
@@ -45,7 +64,7 @@ namespace BatchRename
             editTxtBox.Height = 80;
             editTxtBox.TextWrapping = TextWrapping.WrapWithOverflow;
             editTxtBox.Margin = new Thickness(20, 55, 0, 5);
-            editTxtBox.Text = textPrefix;
+            editTxtBox.Text = Parameter[0];
 
 
 
@@ -73,12 +92,13 @@ namespace BatchRename
             canvas.Children.Add(cancelBtn);
 
             this.AddChild(canvas);
-            
+          
         }
 
         public void handleAdd(object sender, RoutedEventArgs e)
         {
-            textPrefix = editTxtBox.Text.ToString();
+            Parameter[0] = editTxtBox.Text.ToString();
+            ruleDescription = "Add " + Parameter[0] + " into prefix filename.";
             DialogResult = true;
         }
         public void handleCancel(object sender, RoutedEventArgs e)
@@ -96,7 +116,7 @@ namespace BatchRename
             for (int i =0; i < list.Count; i++)
             {
                 var builder = new StringBuilder();
-                builder.Append(textPrefix);
+                builder.Append(Parameter[0]);
                 builder.Append(list[i].itemName);
 
                 string result = builder.ToString();
@@ -107,7 +127,7 @@ namespace BatchRename
         public IRule Clone()
         {
             AddPrefixRule clone = new AddPrefixRule();
-            clone.textPrefix = textPrefix;
+            clone.Parameter = Parameter;
             return clone;
         }
 

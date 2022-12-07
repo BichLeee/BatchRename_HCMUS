@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:BatchRename"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded">
+        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing">
 
     <DockPanel LastChildFill="True">
         <Fluent:Ribbon DockPanel.Dock="Top" Padding="0,0,0,-10" BorderThickness="2">
@@ -15,7 +15,7 @@
                 <Fluent:RibbonGroupBox VerticalAlignment="Center" BorderThickness="2">
                     <Fluent:Button Header="New" Icon="Images/newscreen.png" Margin="30,20,20,0"/>
                     <Fluent:Button Header="Open" Icon="Images/open.png" Margin="20,20,20,0"/>
-                    <Fluent:Button Header="Save" Icon="Images/save.png" Margin="20,20,30,0"/>
+                    <Fluent:Button Header="Save" Icon="Images/save.png" Margin="20,20,30,0" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Button Header="Preview" Icon="Images/preview.png" Margin="20,20,20,0" Click="Handle_Preview"/>
@@ -50,8 +50,10 @@
                         </Fluent:ComboBox.ItemTemplate>
                     </Fluent:ComboBox>
                     <WrapPanel HorizontalAlignment="Center" Margin="0,10,0,0">
-                        <Fluent:Button Header="Add Rule" Width="80" Icon="Images/addrule.png" Click="AddRule_Click"/>
-                        <Fluent:Button Header="Clear" Width="80" Icon="Images/delete.png" Click="clearRule"/>
+                        <Fluent:Button Header="Add Rule" Width="50" Icon="Images/addrule.png" Click="AddRule_Click"/>
+                        <Fluent:Button Header="Clear" Width="50" Icon="Images/delete.png" Click="clearRule"/>
+                        <Fluent:Button Header="Open" Width="50" Icon="Images/openRule.png" Click="loadRulePreset"/>
+                        <Fluent:Button Header="Save" Width="50" Icon="Images/saveRule.png" Click="savePreset"/>
                     </WrapPanel>
                     <DockPanel LastChildFill="True">
                         <WrapPanel DockPanel.Dock="Right">
