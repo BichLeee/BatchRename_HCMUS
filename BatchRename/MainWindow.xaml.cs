@@ -82,9 +82,9 @@ namespace BatchRename
             if (ComboType.SelectedItem == null)
                 return;
             if (ComboType.SelectedItem.ToString() == "File")
-                filesListBox.ItemsSource = _listFile;
+                FilesListView.ItemsSource = _listFile;
             else if (ComboType.SelectedItem.ToString() == "Folder")
-                filesListBox.ItemsSource = _listFolder;
+                FilesListView.ItemsSource = _listFolder;
         }
 
         private void listRules_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -209,12 +209,12 @@ namespace BatchRename
 
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToTop(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToTop(_listFolder, index);
             }
 
@@ -228,12 +228,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToBottom(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToBottom(_listFolder, index);
             }
         }
@@ -246,12 +246,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToPrev(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToPrev(_listFolder, index);
             }
         }
@@ -264,12 +264,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToNext(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 HandleMoveToNext(_listFolder, index);
             }
         }
@@ -386,12 +386,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 _listFile.RemoveAt(index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = filesListBox.SelectedIndex;
+                int index = FilesListView.SelectedIndex;
                 _listFolder.RemoveAt(index);
             }
         }
@@ -487,8 +487,8 @@ namespace BatchRename
                 }
             }
 
-            filesListBox.ItemsSource = null;
-            filesListBox.ItemsSource = previewList;
+            FilesListView.ItemsSource = null;
+            FilesListView.ItemsSource = previewList;
         }
 
         private void addRuleToItem(ObservableCollection<Item> list, bool isFile)
@@ -555,7 +555,7 @@ namespace BatchRename
             }
         }
         private void saveFileToOriginals(object sender, RoutedEventArgs e)
-        {
+        {   
             if (checkBoxOriginals.IsChecked == true)
                 checkBoxAnother.IsChecked = false;
             else
