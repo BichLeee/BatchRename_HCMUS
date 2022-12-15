@@ -13,13 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddSuffixRule", "AddSuffixR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestRule", "TestRule\TestRule.csproj", "{921B44D3-605A-4E3B-99E2-65270F6D3B02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceCharacters", "ReplaceCharacters\ReplaceCharacters.csproj", "{856830D1-26D0-4D4A-8BB7-96C96C5C082D}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangeExtensionRule", "ChangeExtensionRule\ChangeExtensionRule.csproj", "{432F4612-FA01-49FE-A850-DCEB6B433BB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReplaceCharacters", "ReplaceCharacters\ReplaceCharacters.csproj", "{856830D1-26D0-4D4A-8BB7-96C96C5C082D}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangeExtensionRule", "ChangeExtensionRule\ChangeExtensionRule.csproj", "{432F4612-FA01-49FE-A850-DCEB6B433BB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddSuffixCounterRule", "AddSuffixCounterRule\AddSuffixCounterRule.csproj", "{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddSuffixCounterRule", "AddSuffixCounterRule\AddSuffixCounterRule.csproj", "{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveAllSpaceFromBeginAndEnd", "RemoveAllSpaceFromBeginAndEnd\RemoveAllSpaceFromBeginAndEnd.csproj", "{F91E03CD-890F-4986-95D5-7E655F33B054}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoveAllSpaceFromBeginAndEnd", "RemoveAllSpaceFromBeginAndEnd\RemoveAllSpaceFromBeginAndEnd.csproj", "{F91E03CD-890F-4986-95D5-7E655F33B054}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

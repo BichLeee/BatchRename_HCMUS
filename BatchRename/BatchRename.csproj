@@ -45,6 +45,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="dllRules\ReplaceCharacters.dll">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
     <Content Include="dllRules\ChangeExtensionRule.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
