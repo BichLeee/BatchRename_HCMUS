@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:BatchRename"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing" AllowDrop="True">
+        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing">
 
     <DockPanel LastChildFill="True" >
         <Fluent:Ribbon DockPanel.Dock="Top" Padding="0,0,0,-10" BorderThickness="2">
@@ -123,78 +123,49 @@
                             </Button.Content>
                         </Button>
                     </WrapPanel>
-                    <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch"   >
-                        <ListBox.Resources>
-                            <ContextMenu x:Key="listBoxContextMenu">
-                                <MenuItem Header="Remove" Click="removeItem"> 
+                    <ListView Name="filesListBox"  Height="478" Width="720" VerticalAlignment="Top">
+                        <ListView.Resources>
+                            <ContextMenu  x:Key="ListViewContextMenu">
+                                <MenuItem Header="Remove" Click="removeItem">
                                     <MenuItem.Icon>
                                         <Image Source="Images/delete.png"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </ContextMenu>
-                        </ListBox.Resources>
-                        <ListBox.Template>
-                            <ControlTemplate>
-                                <DockPanel>
-                                    <Grid DockPanel.Dock="Top" Height="30" HorizontalAlignment="Stretch" Background="LightSeaGreen">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="180"></ColumnDefinition>
-                                            <ColumnDefinition Width="180"></ColumnDefinition>
-                                            <ColumnDefinition Width="250"></ColumnDefinition>
-                                            <ColumnDefinition Width="*"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <Path Grid.ColumnSpan="4" Data="M0,72 L168,72" Height="1" Stretch="Fill" Stroke="Black" VerticalAlignment="Bottom"/>
-                                        <Label Grid.Column="0" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Name</Label>
-                                        <Label Grid.Column="1" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">New Name</Label>
-                                        <Label Grid.Column="2" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Path</Label>
-                                        <Label Grid.Column="3" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">Error</Label>
-                                        <Border Grid.Column="0" BorderBrush="WhiteSmoke" BorderThickness="1"/>
-                                        <Border Grid.Column="1" BorderBrush="WhiteSmoke" BorderThickness="1"/>
-                                        <Border Grid.Column="2" BorderBrush="WhiteSmoke" BorderThickness="1"/>
-                                        <Border Grid.Column="3" BorderBrush="WhiteSmoke" BorderThickness="1"/>
-                                    </Grid>
-                                    <ItemsPresenter></ItemsPresenter>
-                                </DockPanel>
-                            </ControlTemplate>
-                        </ListBox.Template>
-
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="ContextMenu" Value="{StaticResource listBoxContextMenu}"/>
-                                <Setter Property="Margin" Value="5,0,5,0"/>
+                            <Style x:Key="myHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="LightSeaGreen"/>
+                                <Setter Property="Height" Value="30px"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
                             </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemsPanel>
+                        </ListView.Resources>
 
-                            <ItemsPanelTemplate>
-                                <StackPanel>
+                        <ListView.View>
 
-                                </StackPanel>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="30" HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="180"></ColumnDefinition>
-                                        <ColumnDefinition Width="180"></ColumnDefinition>
-                                        <ColumnDefinition Width="250"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Path Grid.ColumnSpan="4" Data="M0,72 L168,72" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="WhiteSmoke" VerticalAlignment="Bottom"/>
-                                    <TextBlock Text="{Binding itemName}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"></TextBlock>
-                                    <TextBlock Text="{Binding newItemName}" Grid.Column="1" VerticalAlignment="Bottom"></TextBlock>
-                                    <TextBlock Text="{Binding path}" Grid.Column="2" VerticalAlignment="Bottom"></TextBlock>
-                                    <TextBlock Text="{Binding error}" Grid.Column="3" VerticalAlignment="Bottom"></TextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    
-                    
-                    
-                    
-                    
+                            <GridView ColumnHeaderContainerStyle="{StaticResource myHeaderStyle}">
+                                <GridViewColumn Header="Current Name" Width="160" 
+                                            DisplayMemberBinding="{Binding itemName}"/>
+                                <GridViewColumn Header="New Name" Width="160" 
+                                            DisplayMemberBinding="{Binding newItemName}" />
+                                <GridViewColumn Header="Path" Width="280" 
+                                            DisplayMemberBinding="{Binding path}" />
+                                <GridViewColumn Header="Result" Width="120" 
+                                            DisplayMemberBinding="{Binding error}" />
+
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}" >
+                                <Setter Property="ContextMenu" Value="{StaticResource ListViewContextMenu }" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        
+                    </ListView>
+
+
+
+
+
                 </DockPanel>
             </GroupBox>
         </DockPanel>
