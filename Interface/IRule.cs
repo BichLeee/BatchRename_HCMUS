@@ -11,16 +11,17 @@ namespace Interface
 {
     public interface IRule
     {
-        public string ruleName { get;  }
-        public string ruleDescription { get; set; }
-        public List<string> Parameter { get; set; }
-        public string Replace { get; set; }
-        public List<int> counter { get; set; }
-        public bool isEditable();
-        public void Rename(ObservableCollection<Item> list,bool isFile);
-        public bool? showUI();
+        public string ruleName { get;  } // tên
+        public string ruleDescription { get; set; } // mô tả 
+        public List<string> Parameter { get; set; } // tập hợp các biến cần đưa vào để thực hiện rule
+        public string Replace { get; set; } // dùng cho rule thay thế 
+        public List<int> counter { get; set; } // dùng cho rule counter
+        public bool isEditable(); // có thể edit hay k
+        public void Rename(ObservableCollection<Item> list,bool isFile); // thực hiện rename, isFile là coi là File 
+                                                                        // hay folder, rename phân ra 2 trường hợp
+        public bool? showUI(); // show giao diện thêm 
 
-        public IRule Clone();
+        public IRule Clone(); // copy rule
     }
     public class RuleFormat
     {

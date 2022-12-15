@@ -7,9 +7,9 @@
         xmlns:local="clr-namespace:BatchRename"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         mc:Ignorable="d"
-        Title="Batch Rename" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing">
+        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing">
 
-    <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True" >
         <Fluent:Ribbon DockPanel.Dock="Top" Padding="0,0,0,-10" BorderThickness="2">
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox VerticalAlignment="Center" BorderThickness="2">
@@ -98,7 +98,7 @@
                 </StackPanel>
             </DockPanel>
         </GroupBox>
-        <DockPanel DockPanel.Dock="Right">
+        <DockPanel DockPanel.Dock="Right" DragEnter="dragFile" Drop="filesListBox_Drop" AllowDrop="True">
             <GroupBox VerticalAlignment="Stretch">
                 <DockPanel LastChildFill="True">
                     <WrapPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -123,7 +123,7 @@
                             </Button.Content>
                         </Button>
                     </WrapPanel>
-                    <ListView Name="FilesListView"  Height="478" Width="720" VerticalAlignment="Top">
+                    <ListView Name="filesListBox"  Height="478" Width="720" VerticalAlignment="Top">
                         <ListView.Resources>
                             <ContextMenu  x:Key="ListViewContextMenu">
                                 <MenuItem Header="Remove" Click="removeItem">
@@ -144,13 +144,13 @@
 
                             <GridView ColumnHeaderContainerStyle="{StaticResource myHeaderStyle}">
                                 <GridViewColumn Header="Current Name" Width="160" 
-                                            DisplayMemberBinding="{Binding CurrentName}"/>
+                                            DisplayMemberBinding="{Binding itemName}"/>
                                 <GridViewColumn Header="New Name" Width="160" 
-                                            DisplayMemberBinding="{Binding NewName}" />
+                                            DisplayMemberBinding="{Binding newItemName}" />
                                 <GridViewColumn Header="Path" Width="280" 
-                                            DisplayMemberBinding="{Binding Path}" />
+                                            DisplayMemberBinding="{Binding path}" />
                                 <GridViewColumn Header="Result" Width="120" 
-                                            DisplayMemberBinding="{Binding Result}" />
+                                            DisplayMemberBinding="{Binding error}" />
 
                             </GridView>
                         </ListView.View>

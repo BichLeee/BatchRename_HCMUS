@@ -24,6 +24,8 @@ using System.Data;
 using File = System.IO.File;
 using System.Text.Json;
 using System.Windows.Shapes;
+using DataFormats = System.Windows.Forms.DataFormats;
+using DragDropEffects = System.Windows.DragDropEffects;
 
 namespace BatchRename
 {
@@ -38,6 +40,7 @@ namespace BatchRename
             InitializeComponent();
         }
 
+
         ObservableCollection<Item> _listFile = new ObservableCollection<Item>();
         ObservableCollection<Item> _listFolder = new ObservableCollection<Item>();
         ObservableCollection<IRule> _listRule = new ObservableCollection<IRule>();
@@ -50,7 +53,7 @@ namespace BatchRename
 
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
+            // _listFile = e.Data.GetData(DataFormats.FileDrop, true);
 
             var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
             var dlls = new DirectoryInfo(exeFolder).GetFiles("dllRules/*.dll");
@@ -82,9 +85,9 @@ namespace BatchRename
             if (ComboType.SelectedItem == null)
                 return;
             if (ComboType.SelectedItem.ToString() == "File")
-                FilesListView.ItemsSource = _listFile;
+                filesListBox.ItemsSource = _listFile;
             else if (ComboType.SelectedItem.ToString() == "Folder")
-                FilesListView.ItemsSource = _listFolder;
+                filesListBox.ItemsSource = _listFolder;
         }
 
         private void listRules_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -97,7 +100,9 @@ namespace BatchRename
             DialogResult dialogResult = MessageBox.Show("Sure", "Do you want to exit the program?", MessageBoxButtons.YesNo);
             if (dialogResult == System.Windows.Forms.DialogResult.Yes)
             {
-               Environment.Exit(0);
+
+
+                Environment.Exit(0);
             }
             else if (dialogResult == System.Windows.Forms.DialogResult.No)
             {
@@ -124,7 +129,7 @@ namespace BatchRename
 
                 foreach (var file in files)
                 {
-                    
+
                     string nameFile = Path.GetFileName(file);
                     string pathFile = Path.GetDirectoryName(file);
                     bool isExisted = false;
@@ -164,29 +169,29 @@ namespace BatchRename
 
                     //foreach (var folder in folders)
                     //{
-                        string folder = Folderdialog.SelectedPath;
-                        string nameFolder = Path.GetFileName(folder);
-                        string pathFolder = Path.GetDirectoryName(folder);
+                    string folder = Folderdialog.SelectedPath;
+                    string nameFolder = Path.GetFileName(folder);
+                    string pathFolder = Path.GetDirectoryName(folder);
 
-                        bool isExisted = false;
+                    bool isExisted = false;
 
-                        foreach (var f in _listFolder)
+                    foreach (var f in _listFolder)
+                    {
+                        if (nameFolder == f.itemName && pathFolder == f.path)
                         {
-                            if (nameFolder == f.itemName && pathFolder == f.path)
-                            {
-                                isExisted = true; break;
-                            }
+                            isExisted = true; break;
                         }
-                        if (!isExisted)
+                    }
+                    if (!isExisted)
+                    {
+                        _listFolder.Add(new Item()
                         {
-                            _listFolder.Add(new Item()
-                            {
-                                itemName = nameFolder,
-                                newItemName = "",
-                                path = pathFolder,
-                                error = ""
-                            });
-                        }
+                            itemName = nameFolder,
+                            newItemName = "",
+                            path = pathFolder,
+                            error = ""
+                        });
+                    }
                     //}
 
                 }
@@ -209,12 +214,12 @@ namespace BatchRename
 
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToTop(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToTop(_listFolder, index);
             }
 
@@ -228,12 +233,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToBottom(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToBottom(_listFolder, index);
             }
         }
@@ -246,12 +251,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToPrev(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToPrev(_listFolder, index);
             }
         }
@@ -264,12 +269,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToNext(_listFile, index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 HandleMoveToNext(_listFolder, index);
             }
         }
@@ -386,12 +391,12 @@ namespace BatchRename
             }
             if (ComboType.SelectedItem.ToString() == "File")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 _listFile.RemoveAt(index);
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
-                int index = FilesListView.SelectedIndex;
+                int index = filesListBox.SelectedIndex;
                 _listFolder.RemoveAt(index);
             }
         }
@@ -487,8 +492,8 @@ namespace BatchRename
                 }
             }
 
-            FilesListView.ItemsSource = null;
-            FilesListView.ItemsSource = previewList;
+            filesListBox.ItemsSource = null;
+            filesListBox.ItemsSource = previewList;
         }
 
         private void addRuleToItem(ObservableCollection<Item> list, bool isFile)
@@ -555,7 +560,7 @@ namespace BatchRename
             }
         }
         private void saveFileToOriginals(object sender, RoutedEventArgs e)
-        {   
+        {
             if (checkBoxOriginals.IsChecked == true)
                 checkBoxAnother.IsChecked = false;
             else
@@ -589,7 +594,7 @@ namespace BatchRename
         public string path = "";
         private void savePreset(object sender, RoutedEventArgs e)
         {
-            if(_chosenRule.Count == 0)
+            if (_chosenRule.Count == 0)
             {
                 MessageBox.Show("Chosen Rules is empty.", "Errors");
                 return;
@@ -641,11 +646,12 @@ namespace BatchRename
             try
             {
                 dialog.ShowDialog();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return;
             }
-                
+
 
             string preset = dialog.FileName;
             string content = File.ReadAllText(preset);
@@ -667,9 +673,9 @@ namespace BatchRename
             foreach (RuleFormat rule in rules)
             {
                 {
-                    foreach(IRule item in _listRule)
+                    foreach (IRule item in _listRule)
                     {
-                        if(item.ruleName== rule.ruleName)
+                        if (item.ruleName == rule.ruleName)
                         {
                             IRule target = item.Clone();
                             target.ruleDescription = rule.ruleDescription;
@@ -689,5 +695,47 @@ namespace BatchRename
             MessageBox.Show("Loaded preset successfully!", "Success");
             this.path = preset;
         }
+
+        private void dragFile(object sender, System.Windows.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.All;
+
+        }
+
+        private void filesListBox_Drop(object sender, System.Windows.DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            foreach (string file in files)
+            {
+                string nameFile = Path.GetFileName(file);
+                string pathFile = Path.GetDirectoryName(file);
+                bool isExisted = false;
+
+                foreach (var f in _listFile)
+                {
+                    if (nameFile == f.itemName && pathFile == f.path)
+                    {
+                        isExisted = true; break;
+                    }
+                }
+                if (!isExisted)
+                {
+                    var item = new Item()
+                    {
+                        itemName = Path.GetFileName(file),
+                        newItemName = "",
+                        path = pathFile,
+                        error = ""
+                    };
+                    _listFile.Add(item);
+                    
+                }
+
+
+            }
+        }
+
     }
 }
