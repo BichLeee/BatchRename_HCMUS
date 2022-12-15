@@ -7,9 +7,9 @@
         xmlns:local="clr-namespace:BatchRename"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing">
+        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing" AllowDrop="True">
 
-    <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True" >
         <Fluent:Ribbon DockPanel.Dock="Top" Padding="0,0,0,-10" BorderThickness="2">
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox VerticalAlignment="Center" BorderThickness="2">
@@ -98,7 +98,7 @@
                 </StackPanel>
             </DockPanel>
         </GroupBox>
-        <DockPanel DockPanel.Dock="Right">
+        <DockPanel DockPanel.Dock="Right" DragEnter="dragFile" Drop="filesListBox_Drop" AllowDrop="True">
             <GroupBox VerticalAlignment="Stretch">
                 <DockPanel LastChildFill="True">
                     <WrapPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -123,7 +123,7 @@
                             </Button.Content>
                         </Button>
                     </WrapPanel>
-                    <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch"  >
+                    <ListBox x:Name="filesListBox" DockPanel.Dock="Bottom" VerticalAlignment="Stretch"   >
                         <ListBox.Resources>
                             <ContextMenu x:Key="listBoxContextMenu">
                                 <MenuItem Header="Remove" Click="removeItem"> 
