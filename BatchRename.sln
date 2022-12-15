@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.4.33103.184
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchRename", "BatchRename\BatchRename.csproj", "{FA82E2F5-0899-4E9B-8372-439C16FA6588}"
 EndProject
@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddSuffixRule", "AddSuffixR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestRule", "TestRule\TestRule.csproj", "{921B44D3-605A-4E3B-99E2-65270F6D3B02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceCharacters", "ReplaceCharacters\ReplaceCharacters.csproj", "{856830D1-26D0-4D4A-8BB7-96C96C5C082D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReplaceCharacters", "ReplaceCharacters\ReplaceCharacters.csproj", "{856830D1-26D0-4D4A-8BB7-96C96C5C082D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangeExtensionRule", "ChangeExtensionRule\ChangeExtensionRule.csproj", "{432F4612-FA01-49FE-A850-DCEB6B433BB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddSuffixCounterRule", "AddSuffixCounterRule\AddSuffixCounterRule.csproj", "{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoveAllSpaceFromBeginAndEnd", "RemoveAllSpaceFromBeginAndEnd\RemoveAllSpaceFromBeginAndEnd.csproj", "{F91E03CD-890F-4986-95D5-7E655F33B054}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LowercaseAndRemoveSpace", "LowercaseAndRemoveSpace\LowercaseAndRemoveSpace.csproj", "{6011004C-D4E2-45D9-82BD-C3D7BD985126}"
 EndProject
@@ -75,6 +81,30 @@ Global
 		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|x86.ActiveCfg = Release|Any CPU
 		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|x86.Build.0 = Release|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Debug|x86.Build.0 = Debug|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Release|x86.ActiveCfg = Release|Any CPU
+		{432F4612-FA01-49FE-A850-DCEB6B433BB9}.Release|x86.Build.0 = Release|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Debug|x86.Build.0 = Debug|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Release|x86.ActiveCfg = Release|Any CPU
+		{2523EF4C-CB36-4BD9-8CC4-6F69E59A9DBA}.Release|x86.Build.0 = Release|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Debug|x86.Build.0 = Debug|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Release|x86.ActiveCfg = Release|Any CPU
+		{F91E03CD-890F-4986-95D5-7E655F33B054}.Release|x86.Build.0 = Release|Any CPU
 		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Debug|x86.ActiveCfg = Debug|Any CPU

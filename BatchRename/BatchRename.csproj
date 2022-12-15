@@ -10,10 +10,13 @@
 
   <ItemGroup>
     <None Remove="dllRules\AddPrefixRule.dll" />
+    <None Remove="dllRules\AddSuffixCounterRule.dll" />
     <None Remove="dllRules\AddSuffixRule.dll" />
     <None Remove="dllRules\LowercaseAndRemoveSpace.dll" />
     <None Remove="dllRules\PascalCase.dll" />
     <None Remove="dllRules\ReplaceCharacters.dll" />
+    <None Remove="dllRules\ChangeExtensionRule.dll" />
+    <None Remove="dllRules\RemoveAllSpaceFromBeginAndEnd.dll" />
     <None Remove="Images\add.png" />
     <None Remove="Images\addrule.png" />
     <None Remove="Images\delete.png" />
@@ -37,6 +40,9 @@
     <Content Include="dllRules\AddPrefixRule.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="dllRules\AddSuffixCounterRule.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="dllRules\AddSuffixRule.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -47,6 +53,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="dllRules\ReplaceCharacters.dll">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
+    <Content Include="dllRules\ChangeExtensionRule.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dllRules\RemoveAllSpaceFromBeginAndEnd.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

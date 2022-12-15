@@ -14,8 +14,8 @@
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox VerticalAlignment="Center" BorderThickness="2">
                     <Fluent:Button Header="New" Icon="Images/newscreen.png" Margin="30,20,20,0"/>
-                    <Fluent:Button Header="Open" Icon="Images/open.png" Margin="20,20,20,0"/>
-                    <Fluent:Button Header="Save" Icon="Images/save.png" Margin="20,20,30,0" />
+                    <Fluent:Button Header="Open" Icon="Images/open.png" Margin="20,20,20,0" Click="loadProjectJson"/>
+                    <Fluent:Button Header="Save" Icon="Images/save.png" Margin="20,20,30,0" Click="saveProjecttoJson"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Button Header="Preview" Icon="Images/preview.png" Margin="20,20,20,0" Click="Handle_Preview"/>
