@@ -11,7 +11,8 @@ namespace BatchRename
     public class ReplaceCharacters : Window, IRule
     {
         private Canvas canvas = new Canvas();
-        private Label label = new Label();
+        private Label label1 = new Label();
+        private Label label2 = new Label();
         private Button addBtn = new Button();
         private Button cancelBtn = new Button();
         private TextBox editTxtBox = new TextBox();
@@ -39,54 +40,67 @@ namespace BatchRename
 
         public ReplaceCharacters()
         {
-            //Parameter = new List<string>();
-            //Parameter.Add("");
-            //ruleName = "Add Suffix Rule";
-            //ruleDescription = "Add " + Parameter[0] + " into suffix filename.";
-            //counter = new List<int>();
-            //counter.Add(0);
+            Parameter = new List<string>();
+            Parameter.Add("");
+            Parameter.Add("");
+            ruleName = "Replace characters";
+            ruleDescription = "Replace " + Parameter[0] + " ..........";
+            counter = new List<int>();
+            counter.Add(0);
 
-            //this.Title = "Add Suffix Rule";
-            //this.Width = 420;
-            //this.Height = 240;
-            //this.ResizeMode = ResizeMode.NoResize;
-
-
-            //label.Content = "Input characters you want to add as suffix";
-            //label.Margin = new Thickness(20, 15, 0, 0);
-            //label.FontSize = 15;
-
-            //editTxtBox.Width = 360;
-            //editTxtBox.Height = 80;
-            //editTxtBox.TextWrapping = TextWrapping.WrapWithOverflow;
-            //editTxtBox.Margin = new Thickness(20, 55, 0, 5);
-            //editTxtBox.Text = Parameter[0];
+            this.Title = "Replace characters";
+            this.Width = 420;
+            this.Height = 360;
+            this.ResizeMode = ResizeMode.NoResize;
 
 
-            //addBtn.Content = "Add";
-            //addBtn.Name = "add";
-            //addBtn.IsDefault = true;
-            //addBtn.Width = 170;
-            //addBtn.Height = 40;
-            //addBtn.Margin = new Thickness(20, 145, 0, 0);
-            //addBtn.FontSize = 15;
-            //addBtn.Click += this.handleAdd;
+            label1.Content = "Input characters you want to be replaced ex: - _ .";
+            label1.Margin = new Thickness(20, 15, 0, 0);
+            label1.FontSize = 15;
+
+            editTxtBox.Width = 360;
+            editTxtBox.Height = 80;
+            editTxtBox.TextWrapping = TextWrapping.WrapWithOverflow;
+            editTxtBox.Margin = new Thickness(20, 55, 0, 5);
+            editTxtBox.Text = Parameter[0];
 
 
-            //cancelBtn.IsCancel = true;
-            //cancelBtn.Content = "Cancel";
-            //cancelBtn.Width = 170;
-            //cancelBtn.Height = 40;
-            //cancelBtn.Margin = new Thickness(210, 145, 0, 0);
-            //cancelBtn.FontSize = 15;
-            //cancelBtn.Click += this.handleCancel;
+            label2.Content = "Input characters you want to replaced ";
+            label2.Margin = new Thickness(20, 145, 0, 0);
+            label2.FontSize = 15;
 
-            //canvas.Children.Add(label);
-            //canvas.Children.Add(editTxtBox);
-            //canvas.Children.Add(addBtn);
-            //canvas.Children.Add(cancelBtn);
+            replaceTxtBox.Width = 360;
+            replaceTxtBox.Height = 80;
+            replaceTxtBox.TextWrapping = TextWrapping.WrapWithOverflow;
+            replaceTxtBox.Margin = new Thickness(20, 180, 0, 5);
+            replaceTxtBox.Text = Parameter[1];
 
-            //this.AddChild(canvas);
+            addBtn.Content = "Add";
+            addBtn.Name = "add";
+            addBtn.IsDefault = true;
+            addBtn.Width = 170;
+            addBtn.Height = 40;
+            addBtn.Margin = new Thickness(20, 270, 0, 0);
+            addBtn.FontSize = 15;
+            addBtn.Click += this.handleReplace;
+
+
+            cancelBtn.IsCancel = true;
+            cancelBtn.Content = "Cancel";
+            cancelBtn.Width = 170;
+            cancelBtn.Height = 40;
+            cancelBtn.Margin = new Thickness(210, 270, 0, 0);
+            cancelBtn.FontSize = 15;
+            cancelBtn.Click += this.handleCancel;
+
+            canvas.Children.Add(label1);
+            canvas.Children.Add(editTxtBox);
+            canvas.Children.Add(label2);
+            canvas.Children.Add(replaceTxtBox);
+            canvas.Children.Add(addBtn);
+            canvas.Children.Add(cancelBtn);
+
+            this.AddChild(canvas);
 
         }
 
@@ -100,6 +114,7 @@ namespace BatchRename
         public void Rename(ObservableCollection<Item> list, bool isFile)
         {
             string result;
+            String[] par = Parameter[0].Split(' ');
             for (int i = 0; i < list.Count; i++)
             {
                 string str = list[i].itemName;
@@ -117,11 +132,21 @@ namespace BatchRename
                         }
                         fileName = s + '.';
                     }
-                    result = fileName + Parameter[0] + '.' + extension;
+                    for(int j = 0; j < par.Length; j++)
+                    {
+                        fileName = fileName.Replace(par[j], Parameter[1]);
+                    }
+                    
+                    result = fileName + '.' + extension;
                 }
                 else
                 {
-                    result = str + Parameter[0];
+                    for (int j = 0; j < par.Length; j++)
+                    {
+                        str = str.Replace(par[j], Parameter[1]);
+                    }
+
+                    result = str;
                 }
 
                 list[i].newItemName = result;
@@ -132,5 +157,20 @@ namespace BatchRename
         {
             return this.ShowDialog();
         }
+
+        public void handleReplace(object sender, RoutedEventArgs e)
+        {
+            Parameter[0] = editTxtBox.Text.ToString();
+            Parameter[1] = replaceTxtBox.Text.ToString();
+
+            ruleDescription = "Add " + Parameter[0] + " into suffix filename.";
+            DialogResult = true;
+        }
+        public void handleCancel(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
+
+
     }
 }
