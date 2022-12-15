@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="dllRules\AddPrefixRule.dll" />
     <None Remove="dllRules\AddSuffixRule.dll" />
+    <None Remove="dllRules\ReplaceCharacters.dll" />
     <None Remove="Images\add.png" />
     <None Remove="Images\addrule.png" />
     <None Remove="Images\delete.png" />
@@ -35,6 +36,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="dllRules\AddSuffixRule.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dllRules\ReplaceCharacters.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

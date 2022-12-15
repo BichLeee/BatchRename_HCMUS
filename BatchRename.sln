@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddSuffixRule", "AddSuffixR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestRule", "TestRule\TestRule.csproj", "{921B44D3-605A-4E3B-99E2-65270F6D3B02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceCharacters", "ReplaceCharacters\ReplaceCharacters.csproj", "{856830D1-26D0-4D4A-8BB7-96C96C5C082D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,14 @@ Global
 		{921B44D3-605A-4E3B-99E2-65270F6D3B02}.Release|Any CPU.Build.0 = Release|Any CPU
 		{921B44D3-605A-4E3B-99E2-65270F6D3B02}.Release|x86.ActiveCfg = Release|x86
 		{921B44D3-605A-4E3B-99E2-65270F6D3B02}.Release|x86.Build.0 = Release|x86
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Debug|x86.Build.0 = Debug|Any CPU
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|x86.ActiveCfg = Release|Any CPU
+		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
