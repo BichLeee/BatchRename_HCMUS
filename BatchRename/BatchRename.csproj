@@ -11,6 +11,8 @@
   <ItemGroup>
     <None Remove="dllRules\AddPrefixRule.dll" />
     <None Remove="dllRules\AddSuffixRule.dll" />
+    <None Remove="dllRules\LowercaseAndRemoveSpace.dll" />
+    <None Remove="dllRules\PascalCase.dll" />
     <None Remove="dllRules\ReplaceCharacters.dll" />
     <None Remove="Images\add.png" />
     <None Remove="Images\addrule.png" />
@@ -36,6 +38,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="dllRules\AddSuffixRule.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dllRules\LowercaseAndRemoveSpace.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dllRules\PascalCase.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="dllRules\ReplaceCharacters.dll">

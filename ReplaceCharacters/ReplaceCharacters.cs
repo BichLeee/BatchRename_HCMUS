@@ -44,7 +44,7 @@ namespace BatchRename
             Parameter.Add("");
             Parameter.Add("");
             ruleName = "Replace characters";
-            ruleDescription = "Replace " + Parameter[0] + " ..........";
+            ruleDescription = "Replace " + Parameter[0] + " characters into " + Parameter[1];
             counter = new List<int>();
             counter.Add(0);
 
@@ -54,7 +54,7 @@ namespace BatchRename
             this.ResizeMode = ResizeMode.NoResize;
 
 
-            label1.Content = "Input characters you want to be replaced ex: - _ .";
+            label1.Content = "Input characters you want to be replaced ex: ab - +";
             label1.Margin = new Thickness(20, 15, 0, 0);
             label1.FontSize = 15;
 
@@ -122,17 +122,25 @@ namespace BatchRename
                 {
                     string[] strings = str.Split('.');
                     string fileName = "", extension = strings[^1];
-                    foreach (string s in strings)
+                    if (strings.Length == 1)
                     {
-
-                        if (s == extension)
-                        {
-                            fileName = fileName.Remove(fileName.Length - 1);
-                            break;
-                        }
-                        fileName = s + '.';
+                        fileName = str;
+                        extension = "";
                     }
-                    for(int j = 0; j < par.Length; j++)
+                    else
+                    {
+                        foreach (string s in strings)
+                        {
+
+                            if (Array.IndexOf(strings, s) == strings.Length - 1)
+                            {
+                                fileName = fileName.Remove(fileName.Length - 1);
+                                break;
+                            }
+                            fileName = s + '.';
+                        }
+                    }
+                    for (int j = 0; j < par.Length; j++)
                     {
                         fileName = fileName.Replace(par[j], Parameter[1]);
                     }
@@ -163,7 +171,7 @@ namespace BatchRename
             Parameter[0] = editTxtBox.Text.ToString();
             Parameter[1] = replaceTxtBox.Text.ToString();
 
-            ruleDescription = "Add " + Parameter[0] + " into suffix filename.";
+            ruleDescription = "Replace " + Parameter[0] + " characters into " + Parameter[1];
             DialogResult = true;
         }
         public void handleCancel(object sender, RoutedEventArgs e)

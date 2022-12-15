@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestRule", "TestRule\TestRu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceCharacters", "ReplaceCharacters\ReplaceCharacters.csproj", "{856830D1-26D0-4D4A-8BB7-96C96C5C082D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LowercaseAndRemoveSpace", "LowercaseAndRemoveSpace\LowercaseAndRemoveSpace.csproj", "{6011004C-D4E2-45D9-82BD-C3D7BD985126}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PascalCase", "PascalCase\PascalCase.csproj", "{D52E4763-0AC2-4B9A-998A-6293DE551FE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,22 @@ Global
 		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|x86.ActiveCfg = Release|Any CPU
 		{856830D1-26D0-4D4A-8BB7-96C96C5C082D}.Release|x86.Build.0 = Release|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Debug|x86.Build.0 = Debug|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Release|x86.ActiveCfg = Release|Any CPU
+		{6011004C-D4E2-45D9-82BD-C3D7BD985126}.Release|x86.Build.0 = Release|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Debug|x86.Build.0 = Debug|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Release|x86.ActiveCfg = Release|Any CPU
+		{D52E4763-0AC2-4B9A-998A-6293DE551FE5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

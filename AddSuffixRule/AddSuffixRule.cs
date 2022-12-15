@@ -116,15 +116,23 @@ namespace BatchRename
                 {
                     string[] strings = str.Split('.');
                     string fileName = "", extension = strings[^1];
-                    foreach (string s in strings)
+                    if (strings.Length == 1)
                     {
-    
-                        if (s == extension)
+                        fileName = str;
+                        extension = "";
+                    }
+                    else
+                    {
+                        foreach (string s in strings)
                         {
-                            fileName = fileName.Remove(fileName.Length - 1);
-                            break;
+
+                            if (Array.IndexOf(strings,s)==strings.Length-1)
+                            {
+                                fileName = fileName.Remove(fileName.Length - 1);
+                                break;
+                            }
+                            fileName = s + '.';
                         }
-                        fileName = s + '.';
                     }
                     result = fileName + Parameter[0] + '.' + extension;
                 }
