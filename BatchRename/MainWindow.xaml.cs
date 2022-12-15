@@ -475,8 +475,6 @@ namespace BatchRename
                     previewList[i].itemName = _listFile[i].itemName;
                     _listFile[i] = previewList[i].Clone();
                 }
-
-
             }
 
             else if (ComboType.SelectedItem.ToString() == "Folder")
@@ -520,14 +518,30 @@ namespace BatchRename
             {
                 foreach (Item file in _listFile)
                 {
+                    file.error = "";
                     if (checkBoxOriginals.IsChecked == true)
                     {
-                        File.Move(Path.Combine(file.path, file.itemName), Path.Combine(file.path, file.newItemName));
-                        file.itemName = file.newItemName;
+                        try
+                        {
+                            File.Move(Path.Combine(file.path, file.itemName), Path.Combine(file.path, file.newItemName));
+                            file.itemName = file.newItemName;
+                        }
+                        catch(Exception exception)
+                        {
+                            file.error = "Can not rename.";
+                        }
                     }
                     else if (checkBoxAnother.IsChecked == true)
                     {
-                        File.Copy(Path.Combine(file.path, file.itemName), Path.Combine(checkBoxAnother.Header.ToString(), file.newItemName));
+                        try
+                        {
+                            File.Copy(Path.Combine(file.path, file.itemName), Path.Combine(checkBoxAnother.Header.ToString(), file.newItemName));
+
+                        }
+                        catch (Exception exception)
+                        {
+                            file.error = "Can not rename.";
+                        }
                     }
                 }
 
@@ -536,14 +550,29 @@ namespace BatchRename
             {
                 foreach (Item folder in _listFolder)
                 {
+                    folder.error = "";
                     if (checkBoxOriginals.IsChecked == true)
                     {
-                        Directory.Move(Path.Combine(folder.path, folder.itemName), Path.Combine(folder.path, folder.newItemName));
-                        folder.itemName = folder.newItemName;
+                        try
+                        {
+                            Directory.Move(Path.Combine(folder.path, folder.itemName), Path.Combine(folder.path, folder.newItemName));
+                             folder.itemName = folder.newItemName;
+                        }
+                        catch (Exception exception)
+                        {
+                            folder.error = "Can not rename.";
+                        }
                     }
                     else if (checkBoxAnother.IsChecked == true)
                     {
+                        try { 
                         CopyFilesRecursively(Path.Combine(folder.path, folder.itemName), Path.Combine(checkBoxAnother.Header.ToString(), folder.newItemName));
+                        }
+                        catch (Exception exception)
+                        {
+                            folder.error = "Can not rename.";
+                        }
+
                     }
                 }
             }
@@ -638,6 +667,7 @@ namespace BatchRename
 
         }
 
+
         private void loadRulePreset(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
@@ -690,12 +720,141 @@ namespace BatchRename
             }
 
             listRules.ItemsSource = null;
-            listRules.ItemsSource = rules;
+            listRules.ItemsSource = _chosenRule;
 
             MessageBox.Show("Loaded preset successfully!", "Success");
             this.path = preset;
         }
 
+        string project_path = ""; 
+
+        //------------------------------
+
+
+
+        private void saveProject()
+        {
+
+            if (this.project_path == "")
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "JSON (*.json)|*.json";
+
+                dialog.ShowDialog();
+                this.project_path = dialog.FileName;
+            }
+            try
+            {
+                StreamWriter output;
+                
+                List<RuleFormat> rules = new List<RuleFormat>();
+                foreach (var rule in _chosenRule)
+                {
+                    rules.Add(new RuleFormat
+                    {
+                        ruleName = rule.ruleName,
+                        ruleDescription = rule.ruleDescription,
+                        Parameter = rule.Parameter,
+                        Replace = rule.Replace
+                    });
+                }
+                ProJect project = new ProJect()
+                {
+                    rules = rules,
+                    listFiles = _listFile,
+                    listForder =_listFolder
+                };
+
+                output = new StreamWriter(this.project_path);
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string data = JsonSerializer.Serialize(project, options);
+                output.Write(data);
+                output.Close();
+                MessageBox.Show($"Project saved successfully!\nPath: {this.project_path}", "Success");
+            }
+            catch (JsonException exception)
+            {
+                MessageBox.Show("Can't save project.", "Errors");
+            }
+        }
+        private void saveProjecttoJson(object sender, RoutedEventArgs e)
+        {
+            saveProject();
+        }
+
+        private void loadProject()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "JSON (*.json)|*.json";
+
+            try
+            {
+                dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+
+            string project = dialog.FileName;
+            string content = File.ReadAllText(project);
+
+            ProJect Project  = new ProJect();
+
+            try
+            {
+                Project = JsonSerializer.Deserialize<ProJect>(content);
+            }
+            catch (JsonException exception)
+            {
+                MessageBox.Show("Cannot parse data from the file, check the file again", "Error");
+                return;
+            }
+
+            this._chosenRule.Clear();
+
+            foreach (RuleFormat rule in Project.rules)
+            {
+                {
+                    foreach (IRule item in _listRule)
+                    {
+                        if (item.ruleName == rule.ruleName)
+                        {
+                            IRule target = item.Clone();
+                            target.ruleDescription = rule.ruleDescription;
+                            target.Parameter = rule.Parameter;
+                            target.counter = rule.counter;
+                            target.Replace = rule.Replace;
+
+                            this._chosenRule.Add(target);
+                        }
+                    }
+                }
+            }
+
+          
+
+            this._listFile.Clear();
+            foreach(Item item in Project.listFiles)
+            {
+                _listFile.Add(item);
+            }
+            this._listFolder.Clear();
+            foreach(Item item in Project.listForder)
+            {
+                _listFolder.Add(item);
+            }
+
+            MessageBox.Show("Loaded project successfully!", "Success");
+            this.path = project;
+        }
+
+        private void loadProjectJson(object sender, RoutedEventArgs e)
+        {
+            loadProject();
+        }
+        //------------------------------
         private void dragFile(object sender, System.Windows.DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -709,33 +868,60 @@ namespace BatchRename
 
             foreach (string file in files)
             {
-                string nameFile = Path.GetFileName(file);
-                string pathFile = Path.GetDirectoryName(file);
-                bool isExisted = false;
+                if (File.Exists(file)){
+                    string nameFile = Path.GetFileName(file);
+                    string pathFile = Path.GetDirectoryName(file);
+                    bool isExisted = false;
 
-                foreach (var f in _listFile)
-                {
-                    if (nameFile == f.itemName && pathFile == f.path)
+                    foreach (var f in _listFile)
                     {
-                        isExisted = true; break;
+                        if (nameFile == f.itemName && pathFile == f.path)
+                        {
+                            isExisted = true; break;
+                        }
                     }
-                }
-                if (!isExisted)
-                {
-                    var item = new Item()
+                    if (!isExisted)
                     {
-                        itemName = Path.GetFileName(file),
-                        newItemName = "",
-                        path = pathFile,
-                        error = ""
-                    };
-                    _listFile.Add(item);
-                    
+                        var item = new Item()
+                        {
+                            itemName = Path.GetFileName(file),
+                            newItemName = "",
+                            path = pathFile,
+                            error = ""
+                        };
+                        _listFile.Add(item);
+
+                    }
+                }else if (Directory.Exists(file))
+                {
+                    string nameFolder = Path.GetFileName(file);
+                    string pathFolder = Path.GetDirectoryName(file);
+
+                    bool isExisted = false;
+
+                    foreach (var f in _listFolder)
+                    {
+                        if (nameFolder == f.itemName && pathFolder == f.path)
+                        {
+                            isExisted = true; break;
+                        }
+                    }
+                    if (!isExisted)
+                    {
+                        _listFolder.Add(new Item()
+                        {
+                            itemName = nameFolder,
+                            newItemName = "",
+                            path = pathFolder,
+                            error = ""
+                        });
+                    }
                 }
 
 
             }
         }
 
+        
     }
 }
