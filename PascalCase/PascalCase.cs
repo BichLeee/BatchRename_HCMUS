@@ -6,7 +6,7 @@ using System.Windows.Media.Media3D;
 
 namespace BatchRename
 {
-    public class PascalCase :IRule
+    public class PascalCase : IRule
     {
         public string ruleName { get; set; }
         public string ruleDescription { get; set; }
@@ -70,6 +70,7 @@ string _replace, List<int> _counter)
                         }
                     }
                     fileName = fileName.ToLower();
+                    fileName = fileName.Trim();
                     String[] par = fileName.Split(' ');
                     fileName = "";
                     for (int j = 0; j < par.Length; j++)
@@ -79,7 +80,8 @@ string _replace, List<int> _counter)
                             fileName = fileName + Convert.ToChar(par[j][0] - ('a' - 'A'));
                             fileName = fileName + par[j].Remove(0, 1);
                         }
-                        else {
+                        else
+                        {
                             fileName = fileName + par[j];
                         }
                     }
@@ -88,6 +90,7 @@ string _replace, List<int> _counter)
                 else
                 {
                     str = str.ToLower();
+                    str = str.Trim();
                     String[] par = str.Split(' ');
                     str = "";
                     for (int j = 0; j < par.Length; j++)

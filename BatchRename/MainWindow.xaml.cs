@@ -219,7 +219,7 @@ namespace BatchRename
                 if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(Folderdialog.SelectedPath))
                 {
                     folder = Folderdialog.SelectedPath;
-                    
+
                     //}
 
                 }
@@ -263,6 +263,16 @@ namespace BatchRename
         {
             _listFile.Clear();
             _listFolder.Clear();
+            if (ComboType.SelectedItem.ToString() == "File" || ComboType.SelectedItem.ToString() == ALL_FILE)
+            {
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFile;
+            }
+            else if (ComboType.SelectedItem.ToString() == "Folder")
+            {
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFolder;
+            }
         }
 
         private void MoveToTop(object sender, RoutedEventArgs e)
@@ -273,7 +283,7 @@ namespace BatchRename
                 return;
             }
 
-            if (ComboType.SelectedItem.ToString() == "File" || ComboType.SelectedItem.ToString()==ALL_FILE)
+            if (ComboType.SelectedItem.ToString() == "File" || ComboType.SelectedItem.ToString() == ALL_FILE)
             {
                 int index = filesListBox.SelectedIndex;
                 HandleMoveToTop(_listFile, index);
@@ -454,11 +464,15 @@ namespace BatchRename
             {
                 int index = filesListBox.SelectedIndex;
                 _listFile.RemoveAt(index);
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFile;
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
                 int index = filesListBox.SelectedIndex;
                 _listFolder.RemoveAt(index);
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFile;
             }
         }
 
@@ -529,7 +543,11 @@ namespace BatchRename
             {
                 isFile = true;
                 foreach (Item item in _listFile)
+                {
+                    item.error = "";
                     previewList.Add(item.Clone());
+                }
+
                 addRuleToItem(previewList, isFile);
                 for (int i = 0; i < previewList.Count; i++)
                 {
@@ -587,7 +605,7 @@ namespace BatchRename
                             File.Move(Path.Combine(file.path, file.itemName), Path.Combine(file.path, file.newItemName));
                             file.itemName = file.newItemName;
                         }
-                        catch(Exception exception)
+                        catch (Exception exception)
                         {
                             file.error = "Can not rename.";
                         }
@@ -601,11 +619,14 @@ namespace BatchRename
                         }
                         catch (Exception exception)
                         {
-                            file.error = "Can not rename.";
+                            file.error = "Can not copy to another folder.";
                         }
                     }
-                }
 
+                }
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFile;
+                MessageBox.Show("Complete rename.", "Complete");
             }
             else if (ComboType.SelectedItem.ToString() == "Folder")
             {
@@ -617,7 +638,7 @@ namespace BatchRename
                         try
                         {
                             Directory.Move(Path.Combine(folder.path, folder.itemName), Path.Combine(folder.path, folder.newItemName));
-                             folder.itemName = folder.newItemName;
+                            folder.itemName = folder.newItemName;
                         }
                         catch (Exception exception)
                         {
@@ -626,16 +647,20 @@ namespace BatchRename
                     }
                     else if (checkBoxAnother.IsChecked == true)
                     {
-                        try { 
-                        CopyFilesRecursively(Path.Combine(folder.path, folder.itemName), Path.Combine(checkBoxAnother.Header.ToString(), folder.newItemName));
+                        try
+                        {
+                            CopyFilesRecursively(Path.Combine(folder.path, folder.itemName), Path.Combine(checkBoxAnother.Header.ToString(), folder.newItemName));
                         }
                         catch (Exception exception)
                         {
-                            folder.error = "Can not rename.";
+                            folder.error = "Can not copy to another folder.";
                         }
 
                     }
                 }
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFolder;
+                MessageBox.Show("Complete rename.", "Complete");
             }
             if (ComboType.SelectedItem.ToString() == ALL_FILE)
             {
@@ -647,6 +672,9 @@ namespace BatchRename
                         file.itemName = file.newItemName;
                     }
                 }
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFile;
+                MessageBox.Show("Complete rename.", "Complete");
             }
         }
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
@@ -732,7 +760,7 @@ namespace BatchRename
                 output.Close();
                 MessageBox.Show($"Preset saved successfully!\nPath: {this.path}", "Success");
             }
-            catch (JsonException exception)
+            catch (Exception exception)
             {
                 MessageBox.Show("Can't save preset.", "Errors");
             }
@@ -748,6 +776,49 @@ namespace BatchRename
             try
             {
                 dialog.ShowDialog();
+
+                string preset = dialog.FileName;
+                string content = File.ReadAllText(preset);
+
+                List<RuleFormat> rules = new List<RuleFormat>();
+
+                try
+                {
+                    rules = JsonSerializer.Deserialize<List<RuleFormat>>(content);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show("Cannot parse data from the file, check the file again", "Error");
+                    return;
+                }
+
+                this._chosenRule.Clear();
+
+                foreach (RuleFormat rule in rules)
+                {
+                    {
+                        foreach (IRule item in _listRule)
+                        {
+                            if (item.ruleName == rule.ruleName)
+                            {
+                                IRule target = item.Clone();
+                                target.ruleDescription = rule.ruleDescription;
+                                target.Parameter = rule.Parameter;
+                                target.counter = rule.counter;
+                                target.Replace = rule.Replace;
+
+                                this._chosenRule.Add(target);
+                            }
+                        }
+                    }
+                }
+
+                listRules.ItemsSource = null;
+                listRules.ItemsSource = _chosenRule;
+
+                MessageBox.Show("Loaded preset successfully!", "Success");
+                this.path = preset;
+
             }
             catch (Exception ex)
             {
@@ -755,50 +826,10 @@ namespace BatchRename
             }
 
 
-            string preset = dialog.FileName;
-            string content = File.ReadAllText(preset);
 
-            List<RuleFormat> rules = new List<RuleFormat>();
-
-            try
-            {
-                rules = JsonSerializer.Deserialize<List<RuleFormat>>(content);
-            }
-            catch (JsonException exception)
-            {
-                MessageBox.Show("Cannot parse data from the file, check the file again", "Error");
-                return;
-            }
-
-            this._chosenRule.Clear();
-
-            foreach (RuleFormat rule in rules)
-            {
-                {
-                    foreach (IRule item in _listRule)
-                    {
-                        if (item.ruleName == rule.ruleName)
-                        {
-                            IRule target = item.Clone();
-                            target.ruleDescription = rule.ruleDescription;
-                            target.Parameter = rule.Parameter;
-                            target.counter = rule.counter;
-                            target.Replace = rule.Replace;
-
-                            this._chosenRule.Add(target);
-                        }
-                    }
-                }
-            }
-
-            listRules.ItemsSource = null;
-            listRules.ItemsSource = _chosenRule;
-
-            MessageBox.Show("Loaded preset successfully!", "Success");
-            this.path = preset;
         }
 
-        string project_path = ""; 
+        string project_path = "";
 
         //------------------------------
 
@@ -814,11 +845,12 @@ namespace BatchRename
 
                 dialog.ShowDialog();
                 this.project_path = dialog.FileName;
+
             }
             try
             {
                 StreamWriter output;
-                
+
                 List<RuleFormat> rules = new List<RuleFormat>();
                 foreach (var rule in _chosenRule)
                 {
@@ -834,7 +866,7 @@ namespace BatchRename
                 {
                     rules = rules,
                     listFiles = _listFile,
-                    listForder =_listFolder
+                    listForder = _listFolder
                 };
 
                 output = new StreamWriter(this.project_path);
@@ -844,7 +876,7 @@ namespace BatchRename
                 output.Close();
                 MessageBox.Show($"Project saved successfully!\nPath: {this.project_path}", "Success");
             }
-            catch (JsonException exception)
+            catch (Exception exception)
             {
                 MessageBox.Show("Can't save project.", "Errors");
             }
@@ -862,6 +894,59 @@ namespace BatchRename
             try
             {
                 dialog.ShowDialog();
+                string project = dialog.FileName;
+                string content = File.ReadAllText(project);
+
+                ProJect Project = new ProJect();
+
+                try
+                {
+                    Project = JsonSerializer.Deserialize<ProJect>(content);
+                }
+                catch (JsonException exception)
+                {
+                    MessageBox.Show("Cannot parse data from the file, check the file again", "Error");
+                    return;
+                }
+
+                this._chosenRule.Clear();
+
+                foreach (RuleFormat rule in Project.rules)
+                {
+                    {
+                        foreach (IRule item in _listRule)
+                        {
+                            if (item.ruleName == rule.ruleName)
+                            {
+                                IRule target = item.Clone();
+                                target.ruleDescription = rule.ruleDescription;
+                                target.Parameter = rule.Parameter;
+                                target.counter = rule.counter;
+                                target.Replace = rule.Replace;
+
+                                this._chosenRule.Add(target);
+                            }
+                        }
+                    }
+                }
+
+
+
+                this._listFile.Clear();
+                foreach (Item item in Project.listFiles)
+                {
+                    _listFile.Add(item);
+                }
+
+                this._listFolder.Clear();
+                foreach (Item item in Project.listForder)
+                {
+                    _listFolder.Add(item);
+                }
+
+
+                MessageBox.Show("Loaded project successfully!", "Success");
+                this.path = project;
             }
             catch (Exception ex)
             {
@@ -869,61 +954,12 @@ namespace BatchRename
             }
 
 
-            string project = dialog.FileName;
-            string content = File.ReadAllText(project);
 
-            ProJect Project  = new ProJect();
-
-            try
-            {
-                Project = JsonSerializer.Deserialize<ProJect>(content);
-            }
-            catch (JsonException exception)
-            {
-                MessageBox.Show("Cannot parse data from the file, check the file again", "Error");
-                return;
-            }
-
-            this._chosenRule.Clear();
-
-            foreach (RuleFormat rule in Project.rules)
-            {
-                {
-                    foreach (IRule item in _listRule)
-                    {
-                        if (item.ruleName == rule.ruleName)
-                        {
-                            IRule target = item.Clone();
-                            target.ruleDescription = rule.ruleDescription;
-                            target.Parameter = rule.Parameter;
-                            target.counter = rule.counter;
-                            target.Replace = rule.Replace;
-
-                            this._chosenRule.Add(target);
-                        }
-                    }
-                }
-            }
-
-          
-
-            this._listFile.Clear();
-            foreach(Item item in Project.listFiles)
-            {
-                _listFile.Add(item);
-            }
-            this._listFolder.Clear();
-            foreach(Item item in Project.listForder)
-            {
-                _listFolder.Add(item);
-            }
-
-            MessageBox.Show("Loaded project successfully!", "Success");
-            this.path = project;
         }
 
         private void loadProjectJson(object sender, RoutedEventArgs e)
         {
+
             loadProject();
         }
         //------------------------------
@@ -940,7 +976,8 @@ namespace BatchRename
 
             foreach (string file in files)
             {
-                if (File.Exists(file)){
+                if (File.Exists(file))
+                {
                     string nameFile = Path.GetFileName(file);
                     string pathFile = Path.GetDirectoryName(file);
                     bool isExisted = false;
@@ -962,9 +999,15 @@ namespace BatchRename
                             error = ""
                         };
                         _listFile.Add(item);
+                        if (ComboType.SelectedItem != null)
+                        {
+                            filesListBox.ItemsSource = null;
+                            filesListBox.ItemsSource = _listFile;
+                        }
 
                     }
-                }else if (Directory.Exists(file))
+                }
+                else if (Directory.Exists(file))
                 {
                     string nameFolder = Path.GetFileName(file);
                     string pathFolder = Path.GetDirectoryName(file);
@@ -987,12 +1030,22 @@ namespace BatchRename
                             path = pathFolder,
                             error = ""
                         });
+
+                        if (ComboType.SelectedItem != null)
+                        {
+                            filesListBox.ItemsSource = null;
+                            filesListBox.ItemsSource = _listFolder;
+                        }
                     }
                 }
-
-
             }
         }
 
+
+        private void newProject(object sender, RoutedEventArgs e)
+        {
+            MainWindow screen = new MainWindow();
+            screen.Show();
+        }
     }
 }
