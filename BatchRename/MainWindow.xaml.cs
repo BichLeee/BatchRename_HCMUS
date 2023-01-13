@@ -114,8 +114,6 @@ namespace BatchRename
             DialogResult dialogResult = MessageBox.Show("Sure", "Do you want to exit the program?", MessageBoxButtons.YesNo);
             if (dialogResult == System.Windows.Forms.DialogResult.Yes)
             {
-
-
                 Environment.Exit(0);
             }
             else if (dialogResult == System.Windows.Forms.DialogResult.No)
@@ -813,8 +811,8 @@ namespace BatchRename
                     }
                 }
 
-                listRules.ItemsSource = null;
-                listRules.ItemsSource = _chosenRule;
+                rulesListBox.ItemsSource = null;
+                rulesListBox.ItemsSource = _chosenRule;
 
                 MessageBox.Show("Loaded preset successfully!", "Success");
                 this.path = preset;
