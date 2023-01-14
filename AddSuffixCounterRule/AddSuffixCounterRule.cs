@@ -180,7 +180,7 @@ namespace BatchRename
                 String oldName = list[i].itemName;
                 int index = oldName.LastIndexOf('.');
 
-                if (index < 0) index = oldName.Length - 1;
+                if (index < 0) index = oldName.Length;
                 builder.Append(oldName.Substring(0, index));
                 builder.Append(count.ToString("D" + Parameter[2]));
                 builder.Append(oldName.Substring(index));
