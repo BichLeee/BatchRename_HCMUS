@@ -60,7 +60,7 @@ namespace BatchRename
             counter = new List<int>();
             counter.Add(0);
 
-            this.Title = "Add Prefix Rule";
+            this.Title = "Add Counter To End Rule";
             this.Width = 420;
             this.Height = 300;
             this.ResizeMode = ResizeMode.NoResize;
@@ -143,9 +143,9 @@ namespace BatchRename
 
         public void handleAdd(object sender, RoutedEventArgs e)
         {
-            Parameter[0] = edtStartValue.Text.Replace(" ", "");
-            Parameter[1] = edtSteps.Text.Replace(" ", "");
-            Parameter[2] = edtNumDigits.Text.Replace(" ", "");
+            Parameter[0] = edtStartValue.Text.Replace(" ", "").ToString();
+            Parameter[1] = edtSteps.Text.Replace(" ", "").ToString();
+            Parameter[2] = edtNumDigits.Text.Replace(" ", "").ToString();
 
 
             ruleDescription = $"Add counter to the end.\n" +
