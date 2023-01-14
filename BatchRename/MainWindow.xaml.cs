@@ -255,6 +255,18 @@ namespace BatchRename
                     }
                 }
             }
+
+            if (ComboType.SelectedItem.ToString() == "File" || ComboType.SelectedItem.ToString() == ALL_FILE)
+            {
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFile;
+            }
+            else if (ComboType.SelectedItem.ToString() == "Folder")
+            {
+                filesListBox.ItemsSource = null;
+                filesListBox.ItemsSource = _listFolder;
+            }
+
         }
 
         private void Handle_Reset(object sender, RoutedEventArgs e)
