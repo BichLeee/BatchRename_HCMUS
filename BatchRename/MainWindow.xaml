@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:BatchRename"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing">
+        Title="MainWindow" Height="700" Width="1000" Loaded="RibbonWindow_Loaded" Closing="MainWindow_Closing"
+        Icon="Images/writer.png">
 
     <DockPanel LastChildFill="True" >
         <Fluent:Ribbon DockPanel.Dock="Top" Padding="0,0,0,-10" BorderThickness="2">

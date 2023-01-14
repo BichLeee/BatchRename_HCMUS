@@ -75,14 +75,20 @@ string _replace, List<int> _counter)
                     fileName = "";
                     for (int j = 0; j < par.Length; j++)
                     {
-                        if (par[j][0] <= 'z' && par[j][0] >= 'a')
+                        if (String.Equals(par[j], ""))
                         {
-                            fileName = fileName + Convert.ToChar(par[j][0] - ('a' - 'A'));
-                            fileName = fileName + par[j].Remove(0, 1);
                         }
                         else
                         {
-                            fileName = fileName + par[j];
+                            if (par[j][0] <= 'z' && par[j][0] >= 'a')
+                            {
+                                fileName = fileName + Convert.ToChar(par[j][0] - ('a' - 'A'));
+                                fileName = fileName + par[j].Remove(0, 1);
+                            }
+                            else
+                            {
+                                fileName = fileName + par[j];
+                            }
                         }
                     }
                     result = fileName + '.' + extension;
@@ -95,14 +101,21 @@ string _replace, List<int> _counter)
                     str = "";
                     for (int j = 0; j < par.Length; j++)
                     {
-                        if (par[j][0] <= 'z' && par[j][0] >= 'a')
+                        if (String.Equals(par[j], ""))
                         {
-                            str = str + Convert.ToChar(par[j][0] - ('a' - 'A'));
-                            str = str + par[j].Remove(0, 1);
+
                         }
                         else
                         {
-                            str = str + par[j];
+                            if (par[j][0] <= 'z' && par[j][0] >= 'a')
+                            {
+                                str = str + Convert.ToChar(par[j][0] - ('a' - 'A'));
+                                str = str + par[j].Remove(0, 1);
+                            }
+                            else
+                            {
+                                str = str + par[j];
+                            }
                         }
                     }
 
